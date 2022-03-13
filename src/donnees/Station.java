@@ -12,6 +12,15 @@ public class Station {
         this.nom = nom;
     }
 
+    public ArrayList<Trajet> getListeTrajets() {
+        return listeTrajets;
+    }
 
+    public void setListeTrajets(ArrayList<Trajet> listeTrajets) {
+        this.listeTrajets = listeTrajets;
+    }
 
+    public void addTrajet(Trajet trajet) {
+        this.listeTrajets.add(trajet);
+    }
 }
