@@ -21,6 +21,12 @@ public class Trajet {
         this.duree = duree;
     }
 
+    @Override
+    public String toString(){
+        return "Trajet : " + this.depart.getNom() + " à " + this.arrivee.getNom() + "\n" + this.moyenTransport.toString() +
+                "\nHoraires :\n" + this.listeHoraires.toString();
+    }
+
     public void addHoraire(LocalTime horaire){
         this.listeHoraires.add(horaire);
     }

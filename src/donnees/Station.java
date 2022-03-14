@@ -12,12 +12,21 @@ public class Station {
         this.nom = nom;
     }
 
+    @Override
+    public String toString(){
+        return "Station : " + this.nom + "\nTrajets :\n" + this.listeTrajets.toString() + "\n";
+    }
+
     public ArrayList<Trajet> getListeTrajets() {
         return listeTrajets;
     }
 
     public void setListeTrajets(ArrayList<Trajet> listeTrajets) {
         this.listeTrajets = listeTrajets;
+    }
+
+    public String getNom() {
+        return nom;
     }
 
     public void addTrajet(Trajet trajet) {
