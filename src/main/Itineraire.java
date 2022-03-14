@@ -1,16 +1,32 @@
 package main;
 
-import donnees.MoyenTransport;
-import donnees.Station;
-import donnees.Trajet;
-
-import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
 public final class Itineraire {
 
     /*Classe "statique" : finale, constructeur private, TOUS les membres static*/
 
     private Itineraire() {} //Empêche instanciation
+
+
+    /**
+     * Algorithme de Dijkstra adapté au cas d'un réseau de transport avec listes d'horaires.
+     * C'est la fonction principale que l'on voudra utiliser dans le programme.
+     */
+    protected static void trouveChemin(){
+
+        PriorityQueue<Ticket> queue = new PriorityQueue<Ticket>(new Comparator<Ticket>() {
+            @Override
+            public int compare(Ticket o1, Ticket o2) { //o1 - o2
+                return o1.temps.compareTo(o2.temps);
+            }
+        });
+
+    }
+
+
+
 
     /*public static void donneesTest(){
         ArrayList<Station> listeStations = new ArrayList<Station>();
