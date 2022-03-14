@@ -1,5 +1,6 @@
 package donnees;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.SortedSet;
@@ -9,7 +10,7 @@ public class Trajet {
 
     protected Station depart;
     protected Station arrivee;
-    protected TreeSet<Date> listeHoraires = new TreeSet<>();
+    protected TreeSet<LocalTime> listeHoraires = new TreeSet<>(); /////////////////
     protected MoyenTransport moyenTransport;
     protected int duree; //durée du trajet en minutess
 
@@ -18,6 +19,10 @@ public class Trajet {
         this.arrivee = arrivee;
         this.moyenTransport = moyenTransport;
         this.duree = duree;
+    }
+
+    public void addHoraire(LocalTime horaire){
+        this.listeHoraires.add(horaire);
     }
 
 
