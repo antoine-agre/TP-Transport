@@ -12,20 +12,33 @@ public class Station {
         this.nom = nom;
     }
 
-    
+
 	public String getNom() {
 		return nom;
 	}
 
-	
 	public ArrayList<Trajet> getListeTrajets() {
 		return listeTrajets;
 	}
+
 
 	public void addTrajet(Trajet trajet) {
 		listeTrajets.add(trajet);
 	}
 
+	public static boolean listeContient(ArrayList<Station> liste, String nom){
+    	for(Station s : liste){
+    		if(s.getNom().equals(nom)){return true;}
+		}
+    	return false;
+	}
+
+	public static Station listeGet(ArrayList<Station> liste, String nom){
+    	for(Station s : liste){
+    		if(s.getNom().equals(nom)){return s;}
+		}
+    	return null;
+	}
 
 
 }
