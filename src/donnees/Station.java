@@ -13,6 +13,12 @@ public class Station {
     }
 
 
+	@Override
+	public String toString(){
+		return "Station : " + this.nom + "\nTrajets :\n" + this.listeTrajets.toString() + "\n";
+	}
+
+
 	public String getNom() {
 		return nom;
 	}
