@@ -8,10 +8,10 @@ import java.util.TreeSet;
 public class Trajet {
 
     protected Station depart;
-    protected Station arrivee;
+    public Station arrivee;
     protected TreeSet<Date> listeHoraires = new TreeSet<>();
     protected MoyenTransport moyenTransport;
-    protected int Duree;
+    public int Duree;
     //ajout de la variable de temps 
     //songer a un convertisseur en heure apres lajout de la duree sur le temps de depart
     public Trajet(Station depart, Station arrivee, MoyenTransport moyenTransport, int Duree){

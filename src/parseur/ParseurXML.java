@@ -8,17 +8,24 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.SAXException;
 
-public class ParseurTram {
+public class ParseurXML {
 
 	public static void main(String[] args) {
 		try {
-
+			//tram
 			SAXParserFactory factory= SAXParserFactory.newInstance();
 			SAXParser saxParser = factory.newSAXParser();
-			HandlerLecture1 handler = new HandlerLecture1();
-
+			HandlerTram handler = new HandlerTram();
+			
+			//train
+			SAXParserFactory factory1= SAXParserFactory.newInstance();
+			SAXParser saxParser1 = factory1.newSAXParser();
+			HandlerTrain handler1 = new HandlerTrain();
 			try {
-				saxParser.parse("tram.xml",handler);
+				//tram
+				saxParser.parse("C:\\Users\\USER\\eclipse-workspace\\TP-Transport\\src\\fichiers\\tram.xml",handler);
+				//train
+				saxParser.parse("C:\\Users\\USER\\eclipse-workspace\\TP-Transport\\src\\fichiers\\tram.xml",handler1);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
