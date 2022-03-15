@@ -9,19 +9,19 @@ import donnees.MoyenTransport;
 import donnees.Station;
 import donnees.Trajet;
 
-public class HandlerTram extends DefaultHandler {
+	final class HandlerTram extends DefaultHandler {
 	//Cette classe Handler permet d'extraire des donnees dans un fichier xml en associant evenements sur balise à des intructions definies.
 	//Tram.xml
 	
 	//aide gestion des actions liee a l'ouverture et de la fermeture de balise.
-	boolean etatLigne=false;
-	boolean etatStation=false;
-	boolean etatHeure=false;
+	private boolean etatLigne=false;
+	private boolean etatStation=false;
+	private boolean etatHeure=false;
 	
-	int indice=0; //aide a la gestion du remplissage de @listeStation
+	private int indice=0; //aide a la gestion du remplissage de @listeStation
 	
 	//liste des stations; chaque stations contient sa liste de trajet.
-	private static  ArrayList<Station> listeStation = new ArrayList<>();
+	static  ArrayList<Station> listeStation = new ArrayList<>();
 	
 	public HandlerTram() {
 		super();
@@ -40,7 +40,7 @@ public class HandlerTram extends DefaultHandler {
 		 for(int i=0; i< 11;i++) {
 			if(i!=4 && i!=10) {
 			System.out.println(listeStation.get(i).getNom());
-			System.out.println(  (listeStation.get(i) .getListeTrajets() .get(0).Duree));
+			System.out.println(  (listeStation.get(i) .getListeTrajets() .get(0).duree));
 			}
 		}*/
 	}
@@ -135,8 +135,8 @@ public class HandlerTram extends DefaultHandler {
 			}
 		}
 	}
-	
-	public int calculDuree(String depart,String arrive) {
+	//
+	public static int calculDuree(String depart,String arrive) {
 		
 		int duree = Integer.valueOf(arrive)- Integer.valueOf(depart);
 		

@@ -13,6 +13,7 @@ public class ParseurCar {
 		String cwd = new File("").getAbsolutePath();
 		System.out.println("CWD : " + cwd);
 		File test = new File("./src/fichiers/InterCites.txt");
+		
 		try {
 			Scanner scanner = new Scanner(test);
 			//FileInputStream stream = new FileInputStream(test);

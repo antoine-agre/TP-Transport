@@ -1,31 +1,34 @@
 package parseur;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Handler;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
+import donnees.MoyenTransport;
+import donnees.Station;
 
 public class ParseurXML {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) {}
+		
+	public static ArrayList<Station> parsingXML(){
+		ArrayList<Station> listeStationTram,listeStationTrain;
 		try {
-			//tram
 			SAXParserFactory factory= SAXParserFactory.newInstance();
 			SAXParser saxParser = factory.newSAXParser();
-			HandlerTram handler = new HandlerTram();
-			
-			//train
-			SAXParserFactory factory1= SAXParserFactory.newInstance();
-			SAXParser saxParser1 = factory1.newSAXParser();
-			HandlerTrain handler1 = new HandlerTrain();
+			HandlerTram  handlerTram =  new HandlerTram();
+			HandlerTrain handlerTrain = new HandlerTrain();
+		
 			try {
-				//tram
-				saxParser.parse("C:\\Users\\USER\\eclipse-workspace\\TP-Transport\\src\\fichiers\\tram.xml",handler);
-				//train
-				saxParser.parse("C:\\Users\\USER\\eclipse-workspace\\TP-Transport\\src\\fichiers\\tram.xml",handler1);
+				saxParser.parse("./src/fichiers/tram.xml",handlerTram);
+				saxParser.parse("./src/fichiers/train.xml",handlerTrain);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -38,9 +41,11 @@ public class ParseurXML {
 		} catch (SAXException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}	
+		listeStationTram = HandlerTram.listeStation;
+		listeStationTrain = HandlerTrain.listeStation;
 		
-
-	}
-
+		return listeStationTrain ;
+		}
 }
+	
