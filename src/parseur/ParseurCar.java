@@ -16,6 +16,7 @@ public class ParseurCar {
 	 * @return la liste des stations construites.
 	 */
 	public static ArrayList<Station> parseCar(){
+        
 		ArrayList<Station> output = new ArrayList<Station>();
 		File source = new File("./src/fichiers/InterCites.txt");
 
