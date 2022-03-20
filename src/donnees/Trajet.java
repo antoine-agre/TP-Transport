@@ -1,14 +1,14 @@
 package donnees;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.TreeSet;
 
 public class Trajet {
 
     protected Station depart;
     protected Station arrivee;
-    protected TreeSet<Date> listeHoraires = new TreeSet<>();
+    protected TreeSet<LocalTime> listeHoraires = new TreeSet<>();
     protected MoyenTransport moyenTransport;
     public int duree;
     //ajout de la variable de temps 
@@ -24,7 +24,7 @@ public class Trajet {
     @Override
     public String toString(){
         return "Trajet : " + this.depart.getNom() + " à " + this.arrivee.getNom() + "\n" + this.moyenTransport.toString() +
-                "\nHoraires :\n" + this.listeHoraires.toString();
+                "\n" + duree + "min" + "\nHoraires :\n" + this.listeHoraires.toString();
     }
 
     public Station getArrivee() {
@@ -42,6 +42,10 @@ public class Trajet {
             if(t.getArrivee().getNom().equals(destination)){return t;}
         }
         return null;
+    }
+
+    public void addHoraire(int heures, int minutes) {
+        listeHoraires.add(LocalTime.of(heures, minutes));
     }
 
 }
