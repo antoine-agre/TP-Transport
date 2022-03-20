@@ -11,12 +11,21 @@ import donnees.Station;
 import donnees.Trajet;
 
 	final class  HandlerTrain extends DefaultHandler {
-	private boolean a,c,d =false;
-	private int indice =0;
+	private boolean a,c,d,first_in=true;
 	private ArrayList<String> junction = new ArrayList<>();
 	static  ArrayList<Station> listeStation = new ArrayList<>();
+	private boolean depart,arriv,sortie_last;
 	
-	//public static void main(String[] args) {}
+	/*Handlertrain
+	 *
+	 * listeStation: recoie les "Station"
+	 *junction : liste qui receptionne les donnees a chaque ouverture de la balise <junction>
+	 *junction.get(i):
+	 *---------------- pour i=0: nom de Station depart,  pour i=2: temps depart.
+	 *-----------------pour i=1 : "   "   "   " arrivee, pour i=3: "   " arrivee.
+	 *sortie_last: permet de sortir d'une boucle "for".
+	 *les autres variables ont (~) les memes roles que leurs identiques dans la classe Handler.Tram
+	 */
 	
 
 	@Override
@@ -27,14 +36,19 @@ import donnees.Trajet;
 	@Override
 	public void endDocument() throws SAXException {
 		System.out.println("fin du fichier Train.xml");
-		/*System.out.println(listeStation.size());
-		 for(int i=0; i<listeStation.size() ;i++) {
-			System.out.println(  (listeStation.get(i).getNom()) );
-			 for(int j=0;j<listeStation.get(i).getListeTrajets().size();j++) {
-				System.out.println(listeStation.get(i).getListeTrajets().get(j).duree);
-				//System.out.println(  (listeStation.get(i) .getListeTrajets() .get(0).duree));
-
-			}
+		System.out.println(listeStation.size());
+		 /* test
+		 int i=-1;
+		 for(Station s:listeStation) {
+		 	//aucun depart depuis Syen
+			 if(s.getNom().equals("Syen")) {continue;}
+			i++;
+			 if(i==2){
+			System.out.println(s.getNom());
+			System.out.println( (s.getListeTrajets().get(1).getDuree()));
+			System.out.println(s.getListeTrajets().get(2).getArrivee().getNom());
+			System.out.println( (s.getListeTrajets().get(2).listeHoraires).toString());
+			 }
 		 }*/
 	}
 
@@ -42,10 +56,11 @@ import donnees.Trajet;
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 		if (qName.equalsIgnoreCase("junction")) {
 			 a=true;
+			 //initialisation de la liste junction a chaque ouverture de la balise.
 			 junction = new ArrayList<>();
 		}
 		if (qName.equalsIgnoreCase("start-station")) {
-			
+			//le boolean "c" informe de l'ouverture/fermeture des sous-balises de <junction>.
 			 c=true;
 		}
 		if (qName.equalsIgnoreCase("arrival-station")) {
@@ -58,6 +73,7 @@ import donnees.Trajet;
 			 c=true;
 		}
 		if (qName.equalsIgnoreCase("arrival-hour")) {
+			// le boolean "d" informe de l'ouverture de la derniere sous-balise.
 			d=true;
 			c=true;
 		}
@@ -96,31 +112,115 @@ import donnees.Trajet;
 	@Override
 	public void characters(char[] ch, int start, int length) throws SAXException {
 		if (a) {
+			//ouverture la balise <junction>
 			if(c){
+				//ouverture des sous-balises de <junctions>
+				//junction : est la liste qui receptionne les informations successives-
+				//-,entre l'ouvertures et fermettures des sous-balise.
 				junction.add(new String(ch,start,length));
-				//System.out.println(new String(ch,start,length));
+				/*(test)
+				 * System.out.println(new String(ch,start,length));
+				 */
 			}
 			if(d) {
-				indice=0;
-				Station s_depart=new Station(junction.get(0));
-				Station s_arrive=new Station(junction.get(1));
-				int duree= HandlerTram.calculDuree(junction.get(2),junction.get(3));
-				Trajet trajet =new Trajet(s_depart,s_arrive,MoyenTransport.TRAIN,duree);
-				for (int i=0;i<listeStation.size();i++) {
-					if(s_depart.getNom().equalsIgnoreCase(listeStation.get(i).getNom())) {
-						listeStation.get(i).addTrajet(trajet);
-						indice++;
-						break;
-					}
+				//ouverture derniere sous-balise et remplissage de "listeStation" 
+				int duree= ParseurXML.calculDuree(junction.get(2),junction.get(3));
+				//remplissage initial
+				if(first_in) {
+					Station d= new Station(junction.get(0));
+					Station p= new Station(junction.get(1));
+					Trajet e =new Trajet(d,p,MoyenTransport.TRAM,duree);
+					e.addHoraire(ParseurXML.horaire(junction.get(2)));
+					d.addTrajet(e);
+					listeStation.add(d);
+					listeStation.add(p);
+					first_in=false;
 				}
-				if(indice==0) {
-					s_depart.addTrajet(trajet);
-					listeStation.add(s_depart);
+				//remplissage general (apres celui initial).
+				else {
+						depart=true;
+						arriv=true;
+						int j=0,x=0,y=0;
+						for(Station s1:listeStation) {
+							j++;
+							if(s1.getNom().equalsIgnoreCase(junction.get(0)) && depart){
+								depart=false;
+								x=j-1;
+							}
+							int c=0;
+							for(Station s2:listeStation) {
+								c++;
+								if(s2.getNom().equalsIgnoreCase(junction.get(1)) && arriv){
+									arriv=false;
+									y=c-1;
+								}
+							// pour s1 et s2 present dans listeStation  listeStation.get(x)   listeStation.get(y)
+							
+							//4 cas.--- cas ou depart et arrivee existe dans listeStation
+							if(j==listeStation.size()) {
+								sortie_last=true;
+								//--- cas ou depart et arrivee existe dans listeStation
+								
+								if(!depart && !arriv) {
+									int indice_trajet=0;
+									for(Trajet t: listeStation.get(x).getListeTrajets()){
+										indice_trajet++;
+										if(t.getArrivee().getNom().equalsIgnoreCase(listeStation.get(y).getNom()) && t.getDepart().getNom().equalsIgnoreCase(listeStation.get(x).getNom())) {
+											t.addHoraire(ParseurXML.horaire(junction.get(2)));
+											break;
+										}
+										if(indice_trajet==listeStation.get(x).getListeTrajets().size()){
+											
+											Trajet e =new Trajet(listeStation.get(x),listeStation.get(y),MoyenTransport.TRAM,duree);
+											e.addHoraire(ParseurXML.horaire(junction.get(2)));
+											listeStation.get(x).addTrajet(e);
+											break;
+										}
+									}
+									//
+									if(listeStation.get(x).getListeTrajets().size()==0) {
+										Trajet e =new Trajet(listeStation.get(x),listeStation.get(y),MoyenTransport.TRAM,duree);
+										e.addHoraire(ParseurXML.horaire(junction.get(2)));
+										listeStation.get(x).addTrajet(e);
+									}
+									break;
+								}
+								//---cas ou depart et arrivee sont pas present dans listeStation.
+								if(depart && arriv) {
+									Station d= new Station(junction.get(0));
+									Station p= new Station(junction.get(1));
+									Trajet e =new Trajet(d,p,MoyenTransport.TRAM,duree);
+									e.addHoraire(ParseurXML.horaire(junction.get(2)));
+									d.addTrajet(e);
+									listeStation.add(d);
+									listeStation.add(p);
+									break;
+								}
+								//--- cas depart absent && arrivee present.
+								if(depart && !arriv) {
+									Station d= new Station(junction.get(0));
+									Trajet e =new Trajet(d,listeStation.get(y),MoyenTransport.TRAM,duree);
+									e.addHoraire(ParseurXML.horaire(junction.get(2)));
+									d.addTrajet(e);
+									listeStation.add(d);
+									break;
+								}
+								//---cas depart present && arrivee absent.
+								if(!depart && arriv) {
+									Station p= new Station(junction.get(1));
+									Trajet e =new Trajet(listeStation.get(x),p,MoyenTransport.TRAM,duree);
+									e.addHoraire(ParseurXML.horaire(junction.get(2)));
+									listeStation.get(x).addTrajet(e);
+									listeStation.add(p);
+									break;
+								}
+							}
+							}
+							//sortie de la boucle "for"
+							if(sortie_last) {sortie_last =false;break;}
+						}
 				}
 			}
 		}
-		
 	}
-
-
-}
+	}

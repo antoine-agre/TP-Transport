@@ -1,51 +1,66 @@
 package parseur;
 
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.logging.Handler;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
-import donnees.MoyenTransport;
 import donnees.Station;
 
 public class ParseurXML {
 
-	public static void main(String[] args) {}
 		
 	public static ArrayList<Station> parsingXML(){
-		ArrayList<Station> listeStationTram,listeStationTrain;
+		
 		try {
-			SAXParserFactory factory= SAXParserFactory.newInstance();
-			SAXParser saxParser = factory.newSAXParser();
+			SAXParserFactory factoryTram= SAXParserFactory.newInstance();
+			SAXParser saxParserTram = factoryTram.newSAXParser();
 			HandlerTram  handlerTram =  new HandlerTram();
+			
+			SAXParserFactory factoryTrain= SAXParserFactory.newInstance();
+			SAXParser saxParserTrain = factoryTrain.newSAXParser();
 			HandlerTrain handlerTrain = new HandlerTrain();
 		
 			try {
-				saxParser.parse("./src/fichiers/tram.xml",handlerTram);
-				saxParser.parse("./src/fichiers/train.xml",handlerTrain);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				saxParserTram.parse("./src/fichiers/tram.xml",handlerTram);
+				saxParserTrain.parse("./src/fichiers/train.xml",handlerTrain);
+			}catch (IOException e) {e.printStackTrace();}
 			
-			
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
-		listeStationTram = HandlerTram.listeStation;
-		listeStationTrain = HandlerTrain.listeStation;
+		}catch (ParserConfigurationException e) {e.printStackTrace();}
+		 catch (SAXException e) {e.printStackTrace();}	
 		
-		return listeStationTrain ;
+		
+		return Station.unionStation(HandlerTram.listeStation,HandlerTrain.listeStation);
+	}
+	
+	
+
+	public static int calculDuree(String depart,String arrive) {
+		
+		int duree = Integer.valueOf(arrive)- Integer.valueOf(depart);
+		
+		if( ! depart.substring(0,2).equalsIgnoreCase(arrive.substring(0,2)) ){
+			String a1= depart.substring(0,2);
+			String b1= arrive.substring(0,2);
+			duree-=(Integer.valueOf(b1)- Integer.valueOf(a1))*40;
 		}
+		return duree;
+	}
+	
+	public static LocalTime horaire(String depart) {
+		String a= depart.substring(0,2);
+		String b= depart.substring(2,4);
+		return LocalTime.of(Integer.valueOf(a),Integer.valueOf(b));
+	}
+	
+	public static void main(String[] args) {
+		ArrayList<Station> styu= parsingXML();
+		styu.add(null);
+	    }
+	
 }
 	
