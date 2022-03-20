@@ -32,6 +32,12 @@ public class Station {
 		listeTrajets.add(trajet);
 	}
 
+	/**
+	 * Vérifie si une station d'un nom donné existe dans l'ArrayList donnée.
+	 * @param liste	la liste de stations
+	 * @param nom	le nom de la station recherchée
+	 * @return	un booléen indiquant si la station existe dans la liste.
+	 */
 	public static boolean listeContient(ArrayList<Station> liste, String nom){
     	for(Station s : liste){
     		if(s.getNom().equals(nom)){return true;}
@@ -39,6 +45,12 @@ public class Station {
     	return false;
 	}
 
+	/**
+	 * Retourne la station du nom donné existant dans l'ArrayList donnée.
+	 * @param liste	la liste de stations
+	 * @param nom	le nom de la station recherchée
+	 * @return	la Station trouvée dans la liste.
+	 */
 	public static Station listeGet(ArrayList<Station> liste, String nom){
     	for(Station s : liste){
     		if(s.getNom().equals(nom)){return s;}
