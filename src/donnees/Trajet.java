@@ -8,9 +8,8 @@ public class Trajet {
 
     protected Station depart;
     protected Station arrivee;
-    //protected
+    
     public TreeSet<LocalTime> listeHoraires = new TreeSet<>();
-    protected ArrayList<String> listeHoraire = new ArrayList<>();
     
     public Station getDepart() {
 		return depart;
@@ -50,23 +49,12 @@ public class Trajet {
 	public void setDuree(int duree) {
 		this.duree = duree;
 	}
-
+	
+	
+	
 	public static void main(String[] args) {
-		/*int k=2,b;
-    	Trajet a =new Trajet(new Station("ali"),new Station("ali"),MoyenTransport.CAR,4);
-    	b=k;
-    	for(int i=0;i<5;i++){
-    		b++;
-    		a.listeHoraire.add("b");
-	    	for(String t : a.listeHoraire) {
-	    		t=t.toUpperCase();
-	    		a.listeHoraire.add("k");
-	    		break;
-	    	}
-    	System.out.println(a.listeHoraire.toString());
-		}
-    	System.out.println();
-    	*/
+		
+	
 	}
 
 }
