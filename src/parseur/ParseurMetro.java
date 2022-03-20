@@ -157,7 +157,7 @@ public class ParseurMetro {
 				x=correspondance(listeStation, str);
 				y=correspondance(listeStation, str1);
 				Trajet e =new Trajet(listeStation.get(x),listeStation.get(y),MoyenTransport.METRO,Integer.valueOf(liste.get(id_duree).get(j)));
-				e.listeHoraires.addAll(local.get(j));
+				e.getListeHoraires().addAll(local.get(j));
 				listeStation.get(x).addTrajet(e);
 			}	
 		}
