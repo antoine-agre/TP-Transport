@@ -31,6 +31,10 @@ public class Trajet {
         return arrivee;
     }
 
+    public TreeSet<LocalTime> getListeHoraires() {
+        return listeHoraires;
+    }
+
     /**
      * Retourne le Trajet dont le nom de l'arrivée est donnée existant dans l'ArrayList donnée.
      * @param liste     la liste de trajets
