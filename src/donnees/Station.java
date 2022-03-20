@@ -16,7 +16,7 @@ public class Station {
 
 	@Override
 	public String toString(){
-		return "Station : " + this.nom + "\nTrajets :\n" + this.listeTrajets.toString() + "\n";
+		return "Station : " + this.nom + "\n   Trajets :\n   " + this.listeTrajets.toString() + "\n\n";
 	}
 
 

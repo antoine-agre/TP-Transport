@@ -31,8 +31,8 @@ public class Trajet {
     
     @Override
     public String toString(){
-        return "Trajet : " + this.depart.getNom() + " à " + this.arrivee.getNom() + "\n" + this.moyenTransport.toString() +
-                "\n" + duree + "min" + "\nHoraires :\n" + this.listeHoraires.toString();
+        return "Trajet : " + this.depart.getNom() + " ---> " + this.arrivee.getNom() + "\n   " + this.moyenTransport.toString() +
+                "\n   " + duree + "min" + "\n   Horaires :\n   " + this.listeHoraires.toString()+"\n";
     }
     
 

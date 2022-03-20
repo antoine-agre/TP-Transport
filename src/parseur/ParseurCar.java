@@ -21,6 +21,7 @@ public class ParseurCar {
 		File source = new File("./src/fichiers/InterCites.txt");
 
 		try {
+			@SuppressWarnings("resource")
 			Scanner scanner = new Scanner(source);
 
 			//Liste des liaisons
@@ -34,6 +35,7 @@ public class ParseurCar {
 				String[] el = line.split("\\s+");
 
 				if(!Station.listeContient(output, el[0])) {output.add(new Station(el[0]));}
+				
 				if(!Station.listeContient(output, el[1])) {output.add(new Station(el[1]));}
 
 				Station.listeGet(output, el[0]).addTrajet(new Trajet(
@@ -60,7 +62,6 @@ public class ParseurCar {
 				Trajet.listeGet(Station.listeGet(output, el[0]).getListeTrajets(), el[1]).addHoraire(heure, minutes);
 
 			}
-
 			return output;
 
 		} catch (FileNotFoundException e){
@@ -71,7 +72,7 @@ public class ParseurCar {
 
 		return null;
 	}
-
+	
 	public static void main(String[] args){
 
 		System.out.println(parseCar());
