@@ -59,7 +59,7 @@ public class ParseurXML {
 	
 	public static void main(String[] args) {
 		ArrayList<Station> styu= parsingXML();
-		styu.add(null);
+		System.out.println(styu);
 	    }
 	
 }
