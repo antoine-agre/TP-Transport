@@ -1,7 +1,11 @@
 package regex;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Scanner;
@@ -22,11 +26,14 @@ public final class FormatCheck {
 
     /**
      * Vérifie si le fichier, dont le nom est passé en paramètre, correspond au modèle attendu de
-     * l'exploitant du réseau de car intercité.
+     * l'exploitant du réseau de car intercité (ou de l'exploitant du r�seau de m�tro ).
      * @param nomFichier    le nom du fichier à vérifier, qui sera récupéré dans src/fichiers.
      * @return  un booléen indiquant si le fichier correspond bien au modèle attendu.
      */
-    public static boolean checkCar(String nomFichier){
+   
+//----------------------------------------checkcar(String a)------------------------------------	
+	
+	public static boolean checkCar(String nomFichier){
 
         try {
 
@@ -88,11 +95,133 @@ public final class FormatCheck {
 
         } catch(IOException e){e.printStackTrace(); return false;}
 
-
     }
-
+ //-----------------------------------------checkMetro-----------------------------------------------------
+	
+	static boolean checkMetro(String nom2Fichier) {
+		try {
+			
+			Pattern ligneLiaison = Pattern.compile("(([A-Z]).\\w+\\s){2}\\d{1,2}");
+			Pattern heureOuvertureFermeture = Pattern.compile("(\\d){4}");
+            Pattern minuteIntervalle = Pattern.compile("(\\d){1,2}");
+            Pattern ligneStation = Pattern.compile("(([A-Z]).\\w+\\s)+");
+            
+			InputStreamReader file = new InputStreamReader(new FileInputStream("./src/fichiers/"+nom2Fichier),"utf8");
+			Scanner scanner = new Scanner(file);
+			String ligne;
+			
+			int compteur=0;
+			boolean liaison = false;
+			
+			while(scanner.hasNextLine()){
+				ligne=scanner.nextLine();
+				compteur++;
+				
+				//si la ligne est vide
+				if(ligne.isEmpty()) {
+					System.out.println(compteur + " ligne vide");
+                    continue;
+				}
+				
+				//titre
+				if(ligne.equalsIgnoreCase("%depart arrivee duree")) {
+					System.out.println(compteur+ " titre : "+ligne);
+					liaison=true;
+					continue;
+				}
+				
+				//titre
+				if(ligne.equalsIgnoreCase("%stations")) {
+					System.out.println(compteur+ " titre : "+ligne);
+					ligne=scanner.nextLine();
+					compteur++;
+					if(ligneStation.matcher(ligne).matches()){
+                        System.out.println(compteur + " liste de stations");
+                        continue;
+                    }
+					else {
+					 System.err.println("Erreur : ligne " + compteur + " : Format non reconnu.");
+                     return false;
+                    }
+				}
+				
+				//titre
+				if(ligne.equalsIgnoreCase("%toutes les x minutes")) {
+					System.out.println(compteur + " titre : "+ ligne);
+					ligne=scanner.nextLine();
+					compteur++;
+					if(minuteIntervalle.matcher(ligne).matches()){
+                        System.out.println(compteur + " minutes d'intervalles entre les departs");
+                        continue;
+                    }
+					else {
+					 System.err.println("Erreur : ligne " + compteur + " : Format non reconnu.");
+                     return false;
+                    }
+				}
+				
+				//titre
+				if(ligne.equalsIgnoreCase("%� partir de")) {
+					System.out.println(compteur + " titre : "+ ligne);
+					ligne=scanner.nextLine();
+					compteur++;
+					if(heureOuvertureFermeture.matcher(ligne).matches()){
+                        System.out.println(compteur + " heure du premier depart");
+                        continue;
+                    }
+					else {
+					 System.err.println("Erreur : ligne " + compteur + " : Format non reconnu.");
+                     return false;
+					}
+				}
+				
+				
+				if(ligne.equalsIgnoreCase("%dernier d�parts de Gare")) {
+					System.out.println(compteur + " titre : "+ligne);
+					ligne=scanner.nextLine();
+					compteur++;
+					if(heureOuvertureFermeture.matcher(ligne).matches()){
+                        System.out.println(compteur + "heure du  dernier depart");
+                        continue;
+                    }
+					else {
+					 System.err.println("Erreur : ligne " + compteur + " : Format non reconnu.");
+                     return false;
+                    }
+				}
+				
+				if(liaison) {
+					if(ligneLiaison.matcher(ligne).matches()){
+                        System.out.println(compteur + " liaison");
+                        continue;
+                    }
+					else {
+					 System.err.println("Erreur : ligne " + compteur + " : Format non reconnu.");
+                     return false;
+                    }
+				}
+				
+		
+				else {
+					System.out.println(compteur+" titre : "+ligne);
+					
+				}
+			}
+			
+			
+            
+			
+			
+		} catch (UnsupportedEncodingException | FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}   
+		return true;
+	}
+	
+	
     public static void main(String[] args) {
-        System.out.println("Résultat : " + checkCar("InterCites.txt"));
+        System.out.println("Résultat : " + checkMetro("metro.txt"));
     }
 
 }
