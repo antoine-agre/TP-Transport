@@ -6,11 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Scanner;
 import java.util.regex.*;
-
 /**
  * Contient les fonctionnalit√©s de v√©rification de fichiers du programme.
  *
@@ -96,23 +93,28 @@ public final class FormatCheck {
         } catch(IOException e){e.printStackTrace(); return false;}
 
     }
- //-----------------------------------------checkMetro-----------------------------------------------------
+ //-----------------------------------------checkMetro(String a)-----------------------------------------------------
 	
 	static boolean checkMetro(String nom2Fichier) {
 		try {
 			
+			//les patterns pour les differents matching
 			Pattern ligneLiaison = Pattern.compile("(([A-Z]).\\w+\\s){2}\\d{1,2}");
 			Pattern heureOuvertureFermeture = Pattern.compile("(\\d){4}");
             Pattern minuteIntervalle = Pattern.compile("(\\d){1,2}");
             Pattern ligneStation = Pattern.compile("(([A-Z]).\\w+\\s)+");
             
+            // format utf8
 			InputStreamReader file = new InputStreamReader(new FileInputStream("./src/fichiers/"+nom2Fichier),"utf8");
+			@SuppressWarnings("resource")
 			Scanner scanner = new Scanner(file);
-			String ligne;
+			String ligne;// recupËre l'element de chaque ligne
 			
-			int compteur=0;
-			boolean liaison = false;
+			int compteur=0; // sert ‡ situer la ligne 
+			boolean liaison = false;  // active et desactive l'attente d'une ligne liaison
 			
+			
+			//debut de la lecture du fichier
 			while(scanner.hasNextLine()){
 				ligne=scanner.nextLine();
 				compteur++;
@@ -163,6 +165,7 @@ public final class FormatCheck {
 				//titre
 				if(ligne.equalsIgnoreCase("%‡ partir de")) {
 					System.out.println(compteur + " titre : "+ ligne);
+					liaison=false;
 					ligne=scanner.nextLine();
 					compteur++;
 					if(heureOuvertureFermeture.matcher(ligne).matches()){
@@ -189,7 +192,8 @@ public final class FormatCheck {
                      return false;
                     }
 				}
-				
+				 
+				//ligne liaison
 				if(liaison) {
 					if(ligneLiaison.matcher(ligne).matches()){
                         System.out.println(compteur + " liaison");
@@ -201,16 +205,12 @@ public final class FormatCheck {
                     }
 				}
 				
-		
+				// autres ligne
 				else {
 					System.out.println(compteur+" titre : "+ligne);
 					
 				}
 			}
-			
-			
-            
-			
 			
 		} catch (UnsupportedEncodingException | FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -220,8 +220,14 @@ public final class FormatCheck {
 	}
 	
 	
+	
+//-------------------------------------------checkTrain(String b)-----------------------------
+	
+	
+	
+	
     public static void main(String[] args) {
-        System.out.println("R√©sultat : " + checkMetro("metro.txt"));
+        System.out.println("RÈsultat : " + checkCar("InterCites.txt"));
     }
 
 }
