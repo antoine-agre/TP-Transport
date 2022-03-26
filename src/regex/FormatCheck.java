@@ -8,6 +8,12 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
 import java.util.regex.*;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.SAXException;
 /**
  * Contient les fonctionnalit√©s de v√©rification de fichiers du programme.
  *
@@ -96,13 +102,14 @@ public final class FormatCheck {
  //-----------------------------------------checkMetro(String a)-----------------------------------------------------
 	
 	static boolean checkMetro(String nom2Fichier) {
+		boolean resultat=true;
 		try {
 			
 			//les patterns pour les differents matching
 			Pattern ligneLiaison = Pattern.compile("(([A-Z]).\\w+\\s){2}\\d{1,2}");
 			Pattern heureOuvertureFermeture = Pattern.compile("(\\d){4}");
             Pattern minuteIntervalle = Pattern.compile("(\\d){1,2}");
-            Pattern ligneStation = Pattern.compile("(([A-Z]).\\w+\\s)+");
+            Pattern ligneStation = Pattern.compile("(([A-Z]).\\w+\\s*)+");
             
             // format utf8
 			InputStreamReader file = new InputStreamReader(new FileInputStream("./src/fichiers/"+nom2Fichier),"utf8");
@@ -143,7 +150,7 @@ public final class FormatCheck {
                     }
 					else {
 					 System.err.println("Erreur : ligne " + compteur + " : Format non reconnu.");
-                     return false;
+                     resultat=false;
                     }
 				}
 				
@@ -158,7 +165,7 @@ public final class FormatCheck {
                     }
 					else {
 					 System.err.println("Erreur : ligne " + compteur + " : Format non reconnu.");
-                     return false;
+                     resultat=false;
                     }
 				}
 				
@@ -174,7 +181,7 @@ public final class FormatCheck {
                     }
 					else {
 					 System.err.println("Erreur : ligne " + compteur + " : Format non reconnu.");
-                     return false;
+                     resultat= false;
 					}
 				}
 				
@@ -189,7 +196,7 @@ public final class FormatCheck {
                     }
 					else {
 					 System.err.println("Erreur : ligne " + compteur + " : Format non reconnu.");
-                     return false;
+                     resultat= false;
                     }
 				}
 				 
@@ -201,7 +208,7 @@ public final class FormatCheck {
                     }
 					else {
 					 System.err.println("Erreur : ligne " + compteur + " : Format non reconnu.");
-                     return false;
+                     resultat=false;
                     }
 				}
 				
@@ -216,18 +223,57 @@ public final class FormatCheck {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}   
-		return true;
+		return resultat;
 	}
 	
 	
 	
 //-------------------------------------------checkTrain(String b)-----------------------------
 	
+	static boolean checkTrain() {
+			
+			try {
+				SAXParserFactory factoryTrain= SAXParserFactory.newInstance();
+				SAXParser saxParserTrain = factoryTrain.newSAXParser();
+				AnalyseurTrain handlerTrain = new AnalyseurTrain();
+			
+				try {
+					saxParserTrain.parse("./src/fichiers/train.xml",handlerTrain);
+				}catch (IOException e) {e.printStackTrace();}
+				
+			}catch (ParserConfigurationException e) {e.printStackTrace();}
+			 catch (SAXException e) {e.printStackTrace();}	
+			
+			
+			return AnalyseurTrain.resultat ;
+		}
+
+	
+	//----------------------------checkTram(String b)-------------------------------------
+	
+	
+	static boolean checkTram() {
+		try {
+			SAXParserFactory factoryTram= SAXParserFactory.newInstance();
+			SAXParser saxParserTram = factoryTram.newSAXParser();
+			AnalyseurTram  handlerTram =  new AnalyseurTram();
+			try {
+				saxParserTram.parse("./src/fichiers/tram.xml",handlerTram);
+				
+			}catch (IOException e) {e.printStackTrace();}
+			
+		}catch (ParserConfigurationException e) {e.printStackTrace();}
+		 catch (SAXException e) {e.printStackTrace();}	
+		
+		return AnalyseurTram.resultat ;
+	}
 	
 	
 	
+	
+	//----------------------------------
     public static void main(String[] args) {
-        System.out.println("RÈsultat : " + checkCar("InterCites.txt"));
+        System.out.println("RÈsultat : " + checkMetro("metro.txt"));
     }
 
 }

@@ -1,13 +1,20 @@
 package regex;
 
+import java.util.regex.Pattern;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class AnalyseurTram extends DefaultHandler{
 	
-	private boolean etatLignes,etatLigne,etatStation,etatHeure;
-
+	
+	static boolean resultat=true;
+	private boolean reseau,lignes,ligne,stations,heure;
+	int a=0,b;
+	
+	Pattern ligneStation = Pattern.compile("(([A-Z]).\\w+\\s*)+");
+	Pattern ligneHeure = Pattern.compile("(\\d{4}\\s*)+");
 	
 	//ouverture et fermeture du tram.xml
 	@Override
@@ -20,91 +27,108 @@ public class AnalyseurTram extends DefaultHandler{
 		
 	@Override
 	
-	public void startElement(String uri, String localName,
-            String qName, Attributes attributes) {
-		if (qName.equalsIgnoreCase("lignes")) {
-			
-			  etatLignes = true;
-			
+	public void startElement(String uri, String localName,String qName, Attributes attributes) {
+		
+		if (qName.equalsIgnoreCase("reseau")) {
+			reseau = true;
 		 }
+		
+		if (qName.equalsIgnoreCase("lignes")) {
+			lignes = true;
+		 }
+		
 		if (qName.equalsIgnoreCase("ligne")) {
-			
-			  etatLigne = true;
-			
+			a++;
+			b=0;
+			ligne = true;
 		 }
 		 
 		 if (qName.equalsIgnoreCase("stations")) {
-			 etatStation=true;
+			 stations=true;
 			 
 		 }
 		 
 		 if (qName.equalsIgnoreCase("heures-passage")) {
-			  
-			 etatHeure = true;
+			  b++;
+			  heure = true;
 		 }
 	}
 	
 	//fermeture
 	@Override
-	public void endElement(String uri, String localName,
-            String qName) {
+	public void endElement(String uri, String localName,String qName) {
 		
-
-			if (qName.equalsIgnoreCase("lignes")) {
-				
-				  etatLignes = false;
-			}
-				
+		if (qName.equalsIgnoreCase("reseau")) {
+			
+			  reseau = false;
+		 }
 		
-		 
-		 if (qName.equalsIgnoreCase("ligne")) {
-			  etatLigne = false;
-
-
+		if (qName.equalsIgnoreCase("lignes")) {
+				
+				  lignes = false;
+		}
+				
+		if (qName.equalsIgnoreCase("ligne")) {
+			  ligne = false;
 		 }
 		 
-		 
-		 if (qName.equalsIgnoreCase("stations")) {
-			 etatStation=false;
-			 
+		if (qName.equalsIgnoreCase("stations")) {
+			 stations=false;
 		 }
 		 
 		 
 		 if (qName.equalsIgnoreCase("heures-passage")) {
 			  
-			 etatHeure = false;
+			 heure = false;
 			 
 		 }
 	}
 	
 public void characters(char[] ch, int start, int length) throws SAXException {
-		
-		if(etatLignes) {
-			
-			
-			if(etatLigne) {
+	String donnee;
+		if(reseau) {
+			if(lignes) {
+				if(ligne) {
 								
-				if(etatStation) {
+					if(stations) {
+						donnee=new String(ch,start,length);
+						if(ligneStation.matcher(donnee).matches()){
+							System.out.println("balise <stations> de la balise <ligne> "+a);
+	                    }
+						else {
+						 System.err.println("Erreur: balise <stations> de la balise <ligne> "+a+"\nformat non conforme");
+						 resultat=false;
+						}
+					}
 					
-				}
-				
-				if(etatHeure){
+					if(heure){
+						donnee=new String(ch,start,length);
+						if(ligneHeure.matcher(donnee).matches()){
+							System.out.println("balise <heure> "+b+" de la balise <ligne> "+a);
+	                    }
+						else {
+						 System.err.println("Erreur: balise <heure> "+b+" de la balise <ligne> "+a+"\nformat non conforme");
+						 resultat=false;
+						}
 					
-				}
+					}
 			}
 		}
 		else {
-			if(etatStation) {
+			if(stations) {
+				donnee=new String(ch,start,length);
+				if(ligneStation.matcher(donnee).matches()){
+					System.out.println("balise <stations>, liste des stations de toutes les lignes");
+                }
+				else {
+				 System.err.println("Erreur: balise <stations> de toutes les lignes\nformat non conforme");
+				 resultat=false;
+				}
 				
 			}
 		
 	}
 }
-	
-	
-	
-	
-	
-	
-
 }
+}
+
