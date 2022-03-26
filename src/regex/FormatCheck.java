@@ -102,7 +102,6 @@ public final class FormatCheck {
  //-----------------------------------------checkMetro(String a)-----------------------------------------------------
 	
 	static boolean checkMetro(String nom2Fichier) {
-		boolean resultat=true;
 		try {
 			
 			//les patterns pour les differents matching
@@ -150,7 +149,7 @@ public final class FormatCheck {
                     }
 					else {
 					 System.err.println("Erreur : ligne " + compteur + " : Format non reconnu.");
-                     resultat=false;
+                     return false;
                     }
 				}
 				
@@ -165,7 +164,7 @@ public final class FormatCheck {
                     }
 					else {
 					 System.err.println("Erreur : ligne " + compteur + " : Format non reconnu.");
-                     resultat=false;
+                     return false;
                     }
 				}
 				
@@ -181,7 +180,7 @@ public final class FormatCheck {
                     }
 					else {
 					 System.err.println("Erreur : ligne " + compteur + " : Format non reconnu.");
-                     resultat= false;
+                     return false;
 					}
 				}
 				
@@ -196,7 +195,7 @@ public final class FormatCheck {
                     }
 					else {
 					 System.err.println("Erreur : ligne " + compteur + " : Format non reconnu.");
-                     resultat= false;
+                     return  false;
                     }
 				}
 				 
@@ -208,7 +207,7 @@ public final class FormatCheck {
                     }
 					else {
 					 System.err.println("Erreur : ligne " + compteur + " : Format non reconnu.");
-                     resultat=false;
+                     return false;
                     }
 				}
 				
@@ -223,7 +222,7 @@ public final class FormatCheck {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}   
-		return resultat;
+		return true;
 	}
 	
 	

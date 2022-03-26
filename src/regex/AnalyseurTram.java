@@ -8,11 +8,12 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class AnalyseurTram extends DefaultHandler{
 	
-	
+	//initialise resultat à true. Des qu'une erreur est reperer au niveau du matching, il recoit false et on sort du programme. 
 	static boolean resultat=true;
+	
 	private boolean reseau,lignes,ligne,stations,heure;
 	int a=0,b;
-	
+	// les pattern 
 	Pattern ligneStation = Pattern.compile("(([A-Z]).\\w+\\s*)+");
 	Pattern ligneHeure = Pattern.compile("(\\d{4}\\s*)+");
 	
@@ -98,6 +99,7 @@ public void characters(char[] ch, int start, int length) throws SAXException {
 						else {
 						 System.err.println("Erreur: balise <stations> de la balise <ligne> "+a+"\nformat non conforme");
 						 resultat=false;
+						 System.exit(1);
 						}
 					}
 					
@@ -109,6 +111,7 @@ public void characters(char[] ch, int start, int length) throws SAXException {
 						else {
 						 System.err.println("Erreur: balise <heure> "+b+" de la balise <ligne> "+a+"\nformat non conforme");
 						 resultat=false;
+						 System.exit(1);
 						}
 					
 					}
@@ -123,6 +126,7 @@ public void characters(char[] ch, int start, int length) throws SAXException {
 				else {
 				 System.err.println("Erreur: balise <stations> de toutes les lignes\nformat non conforme");
 				 resultat=false;
+				 System.exit(1);
 				}
 				
 			}

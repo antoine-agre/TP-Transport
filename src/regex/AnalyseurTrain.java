@@ -11,7 +11,7 @@ final class  AnalyseurTrain extends DefaultHandler {
 	private boolean horaires,line,junction,station,heure;
 	static boolean resultat=true;
 	int a=0,b=0,c=0,d=0;
-	String name;
+	
 	
 	Pattern ligneStation = Pattern.compile("([A-Z]).\\w+");
 	Pattern ligneHeure = Pattern.compile("(\\d){4}");
@@ -113,7 +113,7 @@ final class  AnalyseurTrain extends DefaultHandler {
 						 System.err.println("Erreur : ligne " +"balise <ligne> "+a+" ,balise junction "
 						 		+b+" ,balise<"+nom+"station>\n format non compatible");
 						 resultat=false;
-						 //System.exit(1);
+						 System.exit(1);
 	                     
 						}
 					}
@@ -128,7 +128,7 @@ final class  AnalyseurTrain extends DefaultHandler {
 						else {
 						 System.err.println("Erreur : ligne " +"balise <ligne> "+a+" ,balise junction "+b+" ,balise<"+nom+"hour>\n format non compatible");
 						 resultat=false;
-						 //System.exit(1);
+						 System.exit(1);
 	                     
 						}
 						
