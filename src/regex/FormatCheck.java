@@ -96,7 +96,7 @@ public final class FormatCheck {
     }
 
 
-	static boolean checkMetro(String nom2Fichier) {
+	static boolean checkMetro(String nomFichier) {
 		try {
 			
 			//les patterns pour les differents matching
@@ -106,18 +106,19 @@ public final class FormatCheck {
             Pattern ligneStation = Pattern.compile("([A-Z]\\w+\\s+)+");
             
             // format utf8
-			InputStreamReader file = new InputStreamReader(new FileInputStream("./src/fichiers/"+nom2Fichier),"utf8");
+			InputStreamReader file = new InputStreamReader(new FileInputStream("./src/fichiers/" + nomFichier),"utf8");
 			@SuppressWarnings("resource")
 			Scanner scanner = new Scanner(file);
-			String ligne;// recupère l'element de chaque ligne
+			String ligne; // recupère l'element de chaque ligne
 			
-			int compteur=0; // sert à situer la ligne
+			int compteur = 0; // sert à situer la ligne
 			boolean liaison = false;  // active et desactive l'attente d'une ligne liaison
 			
 			
 			//debut de la lecture du fichier
 			while(scanner.hasNextLine()){
-				ligne=scanner.nextLine();
+
+				ligne = scanner.nextLine();
 				compteur++;
 				
 				//si la ligne est vide
@@ -128,69 +129,69 @@ public final class FormatCheck {
 				
 				//titre
 				if(ligne.equalsIgnoreCase("%depart arrivee duree")) {
-					System.out.println(compteur+ " titre : "+ligne);
-					liaison=true;
+					System.out.println(compteur + " titre : " + ligne);
+					liaison = true;
 					continue;
 				}
 				
 				//titre
 				if(ligne.equalsIgnoreCase("%stations")) {
-					System.out.println(compteur+ " titre : "+ligne);
-					ligne=scanner.nextLine();
+					System.out.println(compteur + " titre : " + ligne);
+					ligne = scanner.nextLine();
 					compteur++;
 					if(ligneStation.matcher(ligne).matches()){
                         System.out.println(compteur + " liste de stations");
                         continue;
                     }
 					else {
-					 System.err.println("Erreur : ligne " + compteur + " : Format non reconnu.");
+					 System.err.println("Erreur : ligne " + compteur + " : Liste de stations attendue.");
                      return false;
                     }
 				}
 				
 				//titre
 				if(ligne.equalsIgnoreCase("%toutes les x minutes")) {
-					System.out.println(compteur + " titre : "+ ligne);
-					ligne=scanner.nextLine();
+					System.out.println(compteur + " titre : " + ligne);
+					ligne = scanner.nextLine();
 					compteur++;
 					if(ligneIntervalle.matcher(ligne).matches()){
                         System.out.println(compteur + " minutes d'intervalles entre les departs");
                         continue;
                     }
 					else {
-					 System.err.println("Erreur : ligne " + compteur + " : Format non reconnu.");
+					 System.err.println("Erreur : ligne " + compteur + " : Intervalle attendu.");
                      return false;
                     }
 				}
 				
 				//titre
 				if(ligne.equalsIgnoreCase("%à partir de")) {
-					System.out.println(compteur + " titre : "+ ligne);
-					liaison=false;
-					ligne=scanner.nextLine();
+					System.out.println(compteur + " titre : " + ligne);
+					liaison = false;
+					ligne = scanner.nextLine();
 					compteur++;
 					if(ligneHeure.matcher(ligne).matches()){
-                        System.out.println(compteur + " heure du premier depart");
+                        System.out.println(compteur + " Heure du premier depart");
                         continue;
                     }
 					else {
-					 System.err.println("Erreur : ligne " + compteur + " : Format non reconnu.");
+					 System.err.println("Erreur : ligne " + compteur + " : Heure attendue.");
                      return false;
 					}
 				}
 				
 				
 				if(ligne.equalsIgnoreCase("%dernier départs de Gare")) {
-					System.out.println(compteur + " titre : "+ligne);
+					System.out.println(compteur + " titre : " + ligne);
 					ligne=scanner.nextLine();
 					compteur++;
 					if(ligneHeure.matcher(ligne).matches()){
-                        System.out.println(compteur + "heure du  dernier depart");
+                        System.out.println(compteur + "Heure du  dernier depart");
                         continue;
                     }
 					else {
-					 System.err.println("Erreur : ligne " + compteur + " : Format non reconnu.");
-                     return  false;
+					 System.err.println("Erreur : ligne " + compteur + " : Heure attendue.");
+                     return false;
                     }
 				}
 				 
@@ -201,14 +202,14 @@ public final class FormatCheck {
                         continue;
                     }
 					else {
-					 System.err.println("Erreur : ligne " + compteur + " : Format non reconnu.");
+					 System.err.println("Erreur : ligne " + compteur + " : Ligne de liaison attendue.");
                      return false;
                     }
 				}
 				
 				// autres ligne
 				else {
-					System.out.println(compteur+" titre : "+ligne);
+					System.out.println(compteur+" titre : " + ligne);
 					
 				}
 			}
