@@ -100,10 +100,10 @@ public final class FormatCheck {
 		try {
 			
 			//les patterns pour les differents matching
-			Pattern ligneLiaison = Pattern.compile("(([A-Z]).\\w+\\s){2}\\d{1,2}");
-			Pattern heureOuvertureFermeture = Pattern.compile("(\\d){4}");
-            Pattern minuteIntervalle = Pattern.compile("(\\d){1,2}");
-            Pattern ligneStation = Pattern.compile("(([A-Z]).\\w+\\s*)+");
+			Pattern ligneLiaison = Pattern.compile("([A-Z]\\w+\\s+){2}\\d+");
+			Pattern ligneHeure = Pattern.compile("\\d{4}");
+            Pattern ligneIntervalle = Pattern.compile("\\d+");
+            Pattern ligneStation = Pattern.compile("([A-Z]\\w+\\s+)+");
             
             // format utf8
 			InputStreamReader file = new InputStreamReader(new FileInputStream("./src/fichiers/"+nom2Fichier),"utf8");
@@ -153,7 +153,7 @@ public final class FormatCheck {
 					System.out.println(compteur + " titre : "+ ligne);
 					ligne=scanner.nextLine();
 					compteur++;
-					if(minuteIntervalle.matcher(ligne).matches()){
+					if(ligneIntervalle.matcher(ligne).matches()){
                         System.out.println(compteur + " minutes d'intervalles entre les departs");
                         continue;
                     }
@@ -169,7 +169,7 @@ public final class FormatCheck {
 					liaison=false;
 					ligne=scanner.nextLine();
 					compteur++;
-					if(heureOuvertureFermeture.matcher(ligne).matches()){
+					if(ligneHeure.matcher(ligne).matches()){
                         System.out.println(compteur + " heure du premier depart");
                         continue;
                     }
@@ -184,7 +184,7 @@ public final class FormatCheck {
 					System.out.println(compteur + " titre : "+ligne);
 					ligne=scanner.nextLine();
 					compteur++;
-					if(heureOuvertureFermeture.matcher(ligne).matches()){
+					if(ligneHeure.matcher(ligne).matches()){
                         System.out.println(compteur + "heure du  dernier depart");
                         continue;
                     }
