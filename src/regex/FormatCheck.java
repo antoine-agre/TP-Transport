@@ -8,12 +8,11 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
 import java.util.regex.*;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-
 import org.xml.sax.SAXException;
+
 /**
  * Contient les fonctionnalités de vérification de fichiers du programme.
  *
@@ -22,7 +21,6 @@ import org.xml.sax.SAXException;
  *
  * <p> Une méthode générale servira à tester tous les fichiers, et utilisera les méthodes pour chaque fichier.
  */
-
 public final class FormatCheck {
 
     //Pas de constructeur ; toutes les méthodes seront statiques
@@ -33,9 +31,6 @@ public final class FormatCheck {
      * @param nomFichier    le nom du fichier à vérifier, qui sera récupéré dans src/fichiers.
      * @return  un booléen indiquant si le fichier correspond bien au modèle attendu.
      */
-   
-//----------------------------------------checkcar(String a)------------------------------------	
-	
 	public static boolean checkCar(String nomFichier){
 
         try {
@@ -99,8 +94,8 @@ public final class FormatCheck {
         } catch(IOException e){e.printStackTrace(); return false;}
 
     }
- //-----------------------------------------checkMetro(String a)-----------------------------------------------------
-	
+
+
 	static boolean checkMetro(String nom2Fichier) {
 		try {
 			
@@ -225,10 +220,7 @@ public final class FormatCheck {
 		return true;
 	}
 	
-	
-	
-//-------------------------------------------checkTrain(String b)-----------------------------
-	
+
 	static boolean checkTrain() {
 			
 			try {
@@ -247,10 +239,7 @@ public final class FormatCheck {
 			return AnalyseurTrain.resultat ;
 		}
 
-	
-	//----------------------------checkTram(String b)-------------------------------------
-	
-	
+
 	static boolean checkTram() {
 		try {
 			SAXParserFactory factoryTram= SAXParserFactory.newInstance();
@@ -266,13 +255,11 @@ public final class FormatCheck {
 		
 		return AnalyseurTram.resultat ;
 	}
+
 	
-	
-	
-	
-	//----------------------------------
-    public static void main(String[] args) {
-        System.out.println("Résultat : " + checkMetro("metro.txt"));
+	public static void main(String[] args) {
+
+		System.out.println("Résultat : " + checkMetro("metro.txt"));
     }
 
 }
