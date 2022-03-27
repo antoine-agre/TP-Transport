@@ -225,7 +225,7 @@ public final class FormatCheck {
 	}
 	
 
-	static boolean checkTrain() {
+	static boolean checkTrain(String nomFichier) {
 			
 			try {
 				SAXParserFactory factoryTrain= SAXParserFactory.newInstance();
@@ -233,7 +233,7 @@ public final class FormatCheck {
 				AnalyseurTrain handlerTrain = new AnalyseurTrain();
 			
 				try {
-					saxParserTrain.parse("./src/fichiers/train.xml",handlerTrain);
+					saxParserTrain.parse("./src/fichiers/" + nomFichier,handlerTrain);
 				}catch (IOException e) {e.printStackTrace();}
 				
 			}catch (ParserConfigurationException e) {e.printStackTrace();}
@@ -244,13 +244,13 @@ public final class FormatCheck {
 		}
 
 
-	static boolean checkTram() {
+	static boolean checkTram(String nomFichier) {
 		try {
 			SAXParserFactory factoryTram= SAXParserFactory.newInstance();
 			SAXParser saxParserTram = factoryTram.newSAXParser();
 			AnalyseurTram  handlerTram =  new AnalyseurTram();
 			try {
-				saxParserTram.parse("./src/fichiers/tram.xml",handlerTram);
+				saxParserTram.parse("./src/fichiers/" + nomFichier,handlerTram);
 				
 			}catch (IOException e) {e.printStackTrace();}
 			
@@ -263,7 +263,9 @@ public final class FormatCheck {
 	
 	public static void main(String[] args) {
 
-		System.out.println("Résultat : " + checkMetro("metro.txt"));
+		System.out.println("Métro : " + checkMetro("metro.txt"));
+		System.out.println("Train : " + checkTrain("train.xml"));
+		System.out.println("Tram : " + checkTram("tram.xml"));
     }
 
 }
