@@ -144,8 +144,8 @@ public final class FormatCheck {
                         continue;
                     }
 					else {
-					 System.err.println("Erreur : ligne " + compteur + " : Liste de stations attendue.");
-                     return false;
+						System.err.println("Erreur : ligne " + compteur + " : Liste de stations attendue.");
+						return false;
                     }
 				}
 				
@@ -159,8 +159,8 @@ public final class FormatCheck {
                         continue;
                     }
 					else {
-					 System.err.println("Erreur : ligne " + compteur + " : Intervalle attendu.");
-                     return false;
+						System.err.println("Erreur : ligne " + compteur + " : Intervalle attendu.");
+						return false;
                     }
 				}
 				
@@ -175,8 +175,8 @@ public final class FormatCheck {
                         continue;
                     }
 					else {
-					 System.err.println("Erreur : ligne " + compteur + " : Heure attendue.");
-                     return false;
+						System.err.println("Erreur : ligne " + compteur + " : Heure attendue.");
+						return false;
 					}
 				}
 				
@@ -190,8 +190,8 @@ public final class FormatCheck {
                         continue;
                     }
 					else {
-					 System.err.println("Erreur : ligne " + compteur + " : Heure attendue.");
-                     return false;
+						System.err.println("Erreur : ligne " + compteur + " : Heure attendue.");
+						return false;
                     }
 				}
 				 
@@ -202,15 +202,14 @@ public final class FormatCheck {
                         continue;
                     }
 					else {
-					 System.err.println("Erreur : ligne " + compteur + " : Ligne de liaison attendue.");
-                     return false;
+						System.err.println("Erreur : ligne " + compteur + " : Ligne de liaison attendue.");
+						return false;
                     }
 				}
 				
 				// autres ligne
 				else {
 					System.out.println(compteur+" titre : " + ligne);
-					
 				}
 			}
 			
