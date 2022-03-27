@@ -29,7 +29,7 @@ public final class FormatCheck {
 
     /**
      * Vérifie si le fichier, dont le nom est passé en paramètre, correspond au modèle attendu de
-     * l'exploitant du réseau de car intercité (ou de l'exploitant du r�seau de m�tro ).
+     * l'exploitant du réseau de car intercité (ou de l'exploitant du réseau de métro ).
      * @param nomFichier    le nom du fichier à vérifier, qui sera récupéré dans src/fichiers.
      * @return  un booléen indiquant si le fichier correspond bien au modèle attendu.
      */
@@ -114,9 +114,9 @@ public final class FormatCheck {
 			InputStreamReader file = new InputStreamReader(new FileInputStream("./src/fichiers/"+nom2Fichier),"utf8");
 			@SuppressWarnings("resource")
 			Scanner scanner = new Scanner(file);
-			String ligne;// recup�re l'element de chaque ligne
+			String ligne;// recupère l'element de chaque ligne
 			
-			int compteur=0; // sert � situer la ligne 
+			int compteur=0; // sert à situer la ligne
 			boolean liaison = false;  // active et desactive l'attente d'une ligne liaison
 			
 			
@@ -169,7 +169,7 @@ public final class FormatCheck {
 				}
 				
 				//titre
-				if(ligne.equalsIgnoreCase("%� partir de")) {
+				if(ligne.equalsIgnoreCase("%à partir de")) {
 					System.out.println(compteur + " titre : "+ ligne);
 					liaison=false;
 					ligne=scanner.nextLine();
@@ -185,7 +185,7 @@ public final class FormatCheck {
 				}
 				
 				
-				if(ligne.equalsIgnoreCase("%dernier d�parts de Gare")) {
+				if(ligne.equalsIgnoreCase("%dernier départs de Gare")) {
 					System.out.println(compteur + " titre : "+ligne);
 					ligne=scanner.nextLine();
 					compteur++;
@@ -272,7 +272,7 @@ public final class FormatCheck {
 	
 	//----------------------------------
     public static void main(String[] args) {
-        System.out.println("R�sultat : " + checkMetro("metro.txt"));
+        System.out.println("Résultat : " + checkMetro("metro.txt"));
     }
 
 }
