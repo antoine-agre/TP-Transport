@@ -27,7 +27,7 @@ public final class FormatCheck {
 
     /**
      * Vérifie si le fichier, dont le nom est passé en paramètre, correspond au modèle attendu de
-     * l'exploitant du réseau de car intercité (ou de l'exploitant du réseau de métro ).
+     * l'exploitant du réseau de car intercité.
      * @param nomFichier    le nom du fichier à vérifier, qui sera récupéré dans src/fichiers.
      * @return  un booléen indiquant si le fichier correspond bien au modèle attendu.
      */
