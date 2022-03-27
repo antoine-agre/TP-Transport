@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.text.Collator;
 import java.util.Scanner;
 import java.util.regex.*;
 import javax.xml.parsers.ParserConfigurationException;
@@ -165,7 +166,10 @@ public final class FormatCheck {
 				}
 				
 				//titre
-				if(ligne.equalsIgnoreCase("%à partir de")) {
+				Collator coll = Collator.getInstance();
+				coll.setStrength(Collator.NO_DECOMPOSITION);
+
+				if(coll.compare(ligne, "%à partir de") == 0){
 					System.out.println(compteur + " titre : " + ligne);
 					liaison = false;
 					ligne = scanner.nextLine();
