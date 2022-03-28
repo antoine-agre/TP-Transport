@@ -121,13 +121,13 @@ public class ParseurMetro {
 	    	a=scanner.nextLine();
 	    	 
 	    	//debut: 7h00 et fin:23h30 dans notre cas.
-	    	if(a.equalsIgnoreCase("%à partir de")) {
+	    	if(a.equalsIgnoreCase("%Ã  partir de")) {
 	    			debut=ParseurXML.horaire(scanner.nextLine());}
 	    		
 	    	if(a.equalsIgnoreCase("%toutes les x minutes")) {
 	    			duree=Integer.parseInt(scanner.nextLine());}
 	    	
-	    	if(a.equalsIgnoreCase("%dernier départs de Gare")) {
+	    	if(a.equalsIgnoreCase("%dernier dÃ©parts de Gare")) {
 	    		fin=ParseurXML.horaire(scanner.nextLine());}
 	      }
 	      //fermeture du fichier.
