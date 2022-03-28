@@ -15,10 +15,10 @@ public class ParseurCar {
 	 * Parse le fichier InterCites.txt, correspondant au réseau de cars.
 	 * @return la liste des stations construites.
 	 */
-	public static ArrayList<Station> parseCar(){
+	public static ArrayList<Station> parseCar(String nomFichier){
         
 		ArrayList<Station> output = new ArrayList<Station>();
-		File source = new File("./src/fichiers/InterCites.txt");
+		File source = new File("./src/fichiers/" + nomFichier);
 
 		try {
 			@SuppressWarnings("resource")
@@ -75,7 +75,7 @@ public class ParseurCar {
 	
 	public static void main(String[] args){
 
-		System.out.println(parseCar());
+		System.out.println(parseCar("InterCites.txt"));
 
 	}
 
