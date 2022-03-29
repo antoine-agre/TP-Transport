@@ -13,7 +13,7 @@ import donnees.Trajet;
 	final class  HandlerTrain extends DefaultHandler {
 	private boolean a,c,d,first_in=true;
 	private ArrayList<String> junction = new ArrayList<>();
-	static  ArrayList<Station> listeStation = new ArrayList<>();
+	static  ArrayList<Station> listeStation;
 	private boolean depart,arriv,sortie_last;
 	
 	/*Handlertrain
@@ -30,6 +30,7 @@ import donnees.Trajet;
 
 	@Override
 	public void startDocument() throws SAXException {
+		listeStation = new ArrayList<>();
 		System.out.println("ouverture du fichier Train.xml");
 	}
 
@@ -37,40 +38,24 @@ import donnees.Trajet;
 	public void endDocument() throws SAXException {
 		System.out.println("fin du fichier Train.xml");
 		System.out.println(listeStation.size());
-		 /* test
-		 int i=-1;
-		 for(Station s:listeStation) {
-		 	//aucun depart depuis Syen
-			 if(s.getNom().equals("Syen")) {continue;}
-			i++;
-			 if(i==2){
-			System.out.println(s.getNom());
-			System.out.println( (s.getListeTrajets().get(1).getDuree()));
-			System.out.println(s.getListeTrajets().get(2).getArrivee().getNom());
-			System.out.println( (s.getListeTrajets().get(2).listeHoraires).toString());
-			 }
-		 }*/
 	}
 
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 		if (qName.equalsIgnoreCase("junction")) {
-			 a=true;
-			 //initialisation de la liste junction a chaque ouverture de la balise.
-			 junction = new ArrayList<>();
+			a=true;
+			//initialisation de la liste junction a chaque ouverture de la balise.
+			junction = new ArrayList<>();
 		}
 		if (qName.equalsIgnoreCase("start-station")) {
 			//le boolean "c" informe de l'ouverture/fermeture des sous-balises de <junction>.
-			 c=true;
+			c=true;
 		}
-		if (qName.equalsIgnoreCase("arrival-station")) {
-			
-			 
+		if (qName.equalsIgnoreCase("arrival-station")) {	 
 			c=true;
 		}
 		if (qName.equalsIgnoreCase("start-hour")) {
-			
-			 c=true;
+			c=true;
 		}
 		if (qName.equalsIgnoreCase("arrival-hour")) {
 			// le boolean "d" informe de l'ouverture de la derniere sous-balise.
@@ -86,31 +71,28 @@ import donnees.Trajet;
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 		if (qName.equalsIgnoreCase("junction")) {
-			 
-			 a=false;
+			a=false;
 		}
 	
 		if (qName.equalsIgnoreCase("start-station")) {
-			 
-			 c=false;
+			c=false;
 		}
 		
 		if (qName.equalsIgnoreCase("arrival-station")) {
-			 
-			 c=false;
+			c=false;
 		}
 		if (qName.equalsIgnoreCase("start-hour")) {
-			 
-			 c=false;
+			c=false;
 		}
 		if (qName.equalsIgnoreCase("arrival-hour")) {
-			 d=false;
-			 c=false;
+			d=false;
+			c=false;
 		}
 	}
 
 	@Override
 	public void characters(char[] ch, int start, int length) throws SAXException {
+		
 		if (a) {
 			//ouverture la balise <junction>
 			if(c){
@@ -118,9 +100,6 @@ import donnees.Trajet;
 				//junction : est la liste qui receptionne les informations successives-
 				//-,entre l'ouvertures et fermettures des sous-balise.
 				junction.add(new String(ch,start,length));
-				/*(test)
-				 * System.out.println(new String(ch,start,length));
-				 */
 			}
 			if(d) {
 				//ouverture derniere sous-balise et remplissage de "listeStation" 
@@ -138,29 +117,28 @@ import donnees.Trajet;
 				}
 				//remplissage general (apres celui initial).
 				else {
-						depart=true;
-						arriv=true;
-						int j=0,x=0,y=0;
-						for(Station s1:listeStation) {
-							j++;
-							if(s1.getNom().equalsIgnoreCase(junction.get(0)) && depart){
-								depart=false;
-								x=j-1;
+					depart=true;
+					arriv=true;
+					int j=0,x=0,y=0;
+					for(Station s1:listeStation) {
+						j++;
+						if(s1.getNom().equalsIgnoreCase(junction.get(0)) && depart){
+							depart=false;
+							x=j-1;
+						}
+						int c=0;
+						for(Station s2:listeStation) {
+							c++;
+							if(s2.getNom().equalsIgnoreCase(junction.get(1)) && arriv){
+								arriv=false;
+								y=c-1;
 							}
-							int c=0;
-							for(Station s2:listeStation) {
-								c++;
-								if(s2.getNom().equalsIgnoreCase(junction.get(1)) && arriv){
-									arriv=false;
-									y=c-1;
-								}
 							// pour s1 et s2 present dans listeStation  listeStation.get(x)   listeStation.get(y)
 							
 							//4 cas.--- cas ou depart et arrivee existe dans listeStation
 							if(j==listeStation.size()) {
 								sortie_last=true;
 								//--- cas ou depart et arrivee existe dans listeStation
-								
 								if(!depart && !arriv) {
 									int indice_trajet=0;
 									for(Trajet t: listeStation.get(x).getListeTrajets()){
@@ -170,14 +148,13 @@ import donnees.Trajet;
 											break;
 										}
 										if(indice_trajet==listeStation.get(x).getListeTrajets().size()){
-											
 											Trajet e =new Trajet(listeStation.get(x),listeStation.get(y),MoyenTransport.TRAM,duree);
 											e.addHoraire(ParseurXML.horaire(junction.get(2)));
 											listeStation.get(x).addTrajet(e);
 											break;
 										}
 									}
-									//
+									
 									if(listeStation.get(x).getListeTrajets().size()==0) {
 										Trajet e =new Trajet(listeStation.get(x),listeStation.get(y),MoyenTransport.TRAM,duree);
 										e.addHoraire(ParseurXML.horaire(junction.get(2)));
@@ -215,10 +192,10 @@ import donnees.Trajet;
 									break;
 								}
 							}
-							}
-							//sortie de la boucle "for"
-							if(sortie_last) {sortie_last =false;break;}
 						}
+						//sortie de la boucle "for"
+						if(sortie_last) {sortie_last =false;break;}
+					}
 				}
 			}
 		}

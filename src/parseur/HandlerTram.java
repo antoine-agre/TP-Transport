@@ -11,7 +11,7 @@ import donnees.Station;
 import donnees.Trajet;
 
 	final class HandlerTram extends DefaultHandler {
-	/*Cette classe Handler permet d'extraire des donnees dans un fichier xml en associant evenements sur balise à des intructions definies.
+	/*Cette classe Handler permet d'extraire des donnees dans un fichier xml en associant evenements sur balise ï¿½ des intructions definies.
 	*Tram.xml
 	*
 	*-> etatLigne,etatStation,etatHeure : aide gestion des actions liee a l'ouverture et de la fermeture de balise.
@@ -29,7 +29,7 @@ import donnees.Trajet;
 	private boolean etatHeure=false;
 	private int indice=0; 
 	private boolean depart,arriv;
-	static  ArrayList<Station> listeStation = new ArrayList<>();
+	static  ArrayList<Station> listeStation;
 	private ArrayList<String> tab = new ArrayList<String>();
 	public HandlerTram() {
 		super();
@@ -38,20 +38,11 @@ import donnees.Trajet;
 	//ouverture et fermeture du tram.xml
 	@Override
 	public void startDocument() throws SAXException{
+		listeStation = new ArrayList<>();
 		System.out.println("debut du fichier xml");
 		}
 	public void  endDocument() {
 		System.out.println("fin du fichier xml");
-		
-		 //exemple test
-		/*int i=-1;
-		 for(Station s : listeStation) {
-			 i++;
-			if(i==0) {
-			System.out.println(s.getNom());
-			 System.out.println( (s.getListeTrajets().get(0).listeHoraires.size()));
-			 }
-			}*/
 		}
 	
 	//ouverture et fermeture des balises necessaires a l'extraction des elements qui nous interessent
@@ -62,18 +53,13 @@ import donnees.Trajet;
             String qName, Attributes attributes) {
 		
 		 if (qName.equalsIgnoreCase("ligne")) {
-			
 			  etatLigne = true;
 			
 		 }
-		 
 		 if (qName.equalsIgnoreCase("stations")) {
-			 etatStation=true;
-			 
+			 etatStation=true; 
 		 }
-		 
 		 if (qName.equalsIgnoreCase("heures-passage")) {
-			  
 			 etatHeure = true;
 		 }
 	}
@@ -87,20 +73,12 @@ import donnees.Trajet;
 		 if (qName.equalsIgnoreCase("ligne")) {
 			  etatLigne = false;
 			  indice=tab.size();
-
 		 }
-		 
-		 
 		 if (qName.equalsIgnoreCase("stations")) {
-			 etatStation=false;
-			 
+			 etatStation=false; 
 		 }
-		 
-		 
-		 if (qName.equalsIgnoreCase("heures-passage")) {
-			  
+		 if (qName.equalsIgnoreCase("heures-passage")) {  
 			 etatHeure = false;
-			 
 		 }
 	}
 	
@@ -111,8 +89,6 @@ import donnees.Trajet;
 	public void characters(char ch[], int start,int length) throws SAXException{
 		
 		if (etatLigne) {
-			
-			
 			if(etatStation) {
 				//reception des donnees, de l'ouverture a la fermerture de la balise stations.
 				String liste = new String(ch, start,length);
@@ -128,7 +104,6 @@ import donnees.Trajet;
 				String liste=new String(ch,start,length);
 				//mise en tableau des donnees.
 				String tableauHeure[] = liste.split(" ");
-				
 				for(int i=0;i< tableauHeure.length-1;i++) {
 					//calcul de la duree correspondante.
 					int duree=ParseurXML.calculDuree(tableauHeure[i],tableauHeure[i+1]);
@@ -147,7 +122,7 @@ import donnees.Trajet;
 						listeStation.add(p);
 						bool=false;
 					}
-					//----------------------------------traitement general(apres le remplissage initial)---------------------------------
+					//traitement general(apres le remplissage initial)
 					else{
 						
 						depart=true;
@@ -238,6 +213,4 @@ import donnees.Trajet;
 		}
 
 	}
-	
-	
 	}
