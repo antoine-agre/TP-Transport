@@ -1,8 +1,6 @@
 package parseur;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -41,6 +39,7 @@ public class ParseurMetro {
 			//fermeture du fichier
 			scanner.close();    
 			}catch(IOException e){e.printStackTrace();}
+
 	}
 	
 	
@@ -81,6 +80,7 @@ public class ParseurMetro {
 		    }
 		    scanner.close();    
 		    }catch(IOException e){e.printStackTrace();}
+
 		return tableau_donnee;
 	}
 	
@@ -126,6 +126,7 @@ public class ParseurMetro {
 		    	debut=debut.plusMinutes(Integer.parseInt(s));
 			}
 		}catch(IOException e){e.printStackTrace();}
+
 		return local;
 	}
 	
@@ -139,21 +140,36 @@ public class ParseurMetro {
 		initialisisation_listeStation(fileName);
 		ArrayList<ArrayList<String>> liste=liaison(fileName);
 		/**
+
 		 * la premiere case des  3 ArrayList "s" contiennent les infos sur la nature des elements de "s".	
 		 * pour rappel : s.size=3
 		 * on supprime donc les premieres cases apres reception de l'informations.
 		 */
 		for(ArrayList<String> s:liste) {
-			if(s.get(0).equalsIgnoreCase("depart")){id_depart=i;i++;s.remove(0);continue;}
-			if(s.get(0).equalsIgnoreCase("arrivee")){id_arriv=i;i++;s.remove(0);continue;}
-			if(s.get(0).equalsIgnoreCase("duree")) {id_duree=i;s.remove(0);i++;}
+			if(s.get(0).equalsIgnoreCase("depart")){
+				id_depart = i;
+				i++;
+				s.remove(0);
+				continue;
+			}
+			if(s.get(0).equalsIgnoreCase("arrivee")){
+				id_arriv = i;
+				i++;
+				s.remove(0);
+				continue;
+			}
+			if(s.get(0).equalsIgnoreCase("duree")){
+				id_duree = i;
+				s.remove(0);
+				i++;
+			}
 		}
 		//en fonction des indice de position des nom de station depart,arrivee et de la duree, remplisage de la listeStation.
 		ArrayList<ArrayList<LocalTime>> local=plageHoraire(liste.get(id_duree),fileName);
 		Station x,y;
 		String str1;
 		//j :gere les indices de positions. 
-		int j=-1;
+		int j = -1;
 		for(String str: liste.get(id_depart)) {
 			j++;
 			if(j<liste.get(id_arriv).size()) {
@@ -168,10 +184,115 @@ public class ParseurMetro {
 		resultat=listeStation;
 		return resultat;
 	}
+
+	/**
+	 * Parse le fichier passé en paramètre, correspondant au réseau de métro.
+	 * @param fileName le nom du fichier contenant les informations du réseau de métro.
+	 * @return la liste des stations construites.
+	 */
+	public static ArrayList<Station> parseMetro(String fileName){
+
+		ArrayList<Station> output = new ArrayList<Station>();
+		File source = new File("./src/fichiers/" + fileName);
+
+		LocalTime heureDebut = LocalTime.of(0,0), heureDernierDepart = LocalTime.of(0,0);
+		int intervalle = 60;
+
+		ArrayList<Trajet> trajets = new ArrayList<Trajet>();
+
+		try {
+			@SuppressWarnings("resource")
+			Scanner scanner = new Scanner(source);
+
+			while(scanner.hasNext()) {
+
+				String line = scanner.nextLine();
+
+				if(line.equals("%stations")){
+					for(String s : scanner.nextLine().split("\\s+")){
+						output.add(new Station(s));
+					}
+				}
+
+				else if(line.equals("%depart arrivee duree")){
+
+					line = scanner.nextLine();
+					//System.out.println("line = " + line);
+					while(!line.isBlank()){
+						//System.out.println("BOUCLE : " + line);
+						String[] liaison = line.split("\\s+");
+
+						Trajet t = new Trajet(Station.listeGet(output, liaison[0]), Station.listeGet(output, liaison[1]),
+								MoyenTransport.METRO, Integer.parseInt(liaison[2]));
+
+						Station.listeGet(output, liaison[0]).addTrajet(t);
+						trajets.add(t);
+
+						//System.out.println("output : " + output);
+						//System.out.println("trajets : " + trajets);
+
+						line = scanner.nextLine();
+
+						/*Station.listeGet(output, liaison[0]).addTrajet(new Trajet(
+								Station.listeGet(output, liaison[0]), Station.listeGet(output, liaison[1]),
+								MoyenTransport.METRO, Integer.parseInt(liaison[2])));*/
+					}
+					//System.out.println("FIN BOUCLE : " + line);
+				}
+
+				else if(line.equals("%à partir de")){
+					String ligne = scanner.nextLine();
+					int heures = Integer.parseInt(ligne.substring(0, 2));
+					int minutes = Integer.parseInt(ligne.substring(2, 4));
+					heureDebut = LocalTime.of(heures, minutes);
+				}
+
+				else if(line.equals("%toutes les x minutes")){
+					intervalle = Integer.parseInt(scanner.nextLine());
+				}
+
+				else if(line.equals("%dernier départs de Gare")){
+					String ligne = scanner.nextLine();
+					int heures = Integer.parseInt(ligne.substring(0, 2));
+					int minutes = Integer.parseInt(ligne.substring(2, 4));
+					heureDernierDepart = LocalTime.of(heures, minutes);
+				}
+			}
+
+			//System.out.println("Heure début : " + heureDebut + " ; Heure fin : " + heureDernierDepart + "; intervalle : " + intervalle);
+			//System.out.println("trajets : " + trajets);
+			//System.out.println("output : " + output);
+
+			int decalage = 0;
+
+			for(Trajet t : trajets){
+				//System.out.println("BOUCLE TRAJETS : " + t);
+				for(LocalTime lt = heureDebut; !lt.isAfter(heureDernierDepart); lt = lt.plusMinutes(intervalle)){
+					//System.out.println("boucle : lt = " + lt);
+					t.addHoraire(lt.plusMinutes(decalage));
+				}
+				decalage = decalage + t.getDuree();
+			}
+			//System.out.println("FIN TRAJETS : " + trajets);
+			//System.out.println("FIN OUTPUT : " + output);
+
+			return output;
+
+		} catch (FileNotFoundException e){
+			System.err.println("Erreur : fichier non trouvé.");
+			e.printStackTrace();
+		}
+
+
+		return null;
+
+	}
+
 	
 
 	public static void main(String args[]){
 		ArrayList<Station> x=parseurMetro("metro.txt");
 		System.out.println(x);
+
 	}
 }
