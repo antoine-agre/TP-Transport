@@ -17,12 +17,12 @@ final class  AnalyseurTrain extends DefaultHandler {
 	Pattern ligneHeure = Pattern.compile("(\\d){4}");
 	
 	public void startDocument() throws SAXException {
-		System.out.println("ouverture du fichier Train.xml");
+		//System.out.println("ouverture du fichier Train.xml");
 	}
 	
 
 	public void endDocument() throws SAXException {
-		System.out.println("fin du fichier Train.xml");
+		//System.out.println("fin du fichier Train.xml");
 				}
 
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
@@ -107,7 +107,7 @@ final class  AnalyseurTrain extends DefaultHandler {
 						if(c==1) nom="start-";
 						else nom="arrival-";
 						if(ligneStation.matcher(donnee).matches()){
-							System.out.println("balise <ligne> "+a+" ,balise junction "+b+" ,balise<"+nom+"station> ");
+							//System.out.println("balise <ligne> "+a+" ,balise junction "+b+" ,balise<"+nom+"station> ");
 	                    }
 						else {
 						 System.err.println("Erreur : ligne " +"balise <ligne> "+a+" ,balise junction "
@@ -123,7 +123,7 @@ final class  AnalyseurTrain extends DefaultHandler {
 						if(d==1) nom="start-";
 						else nom="arrival-";
 						if(ligneHeure.matcher(donnee).matches()){
-							System.out.println("balise <ligne> "+a+" ,balise junction "+b+" ,balise<"+nom+"hour> ");
+							//System.out.println("balise <ligne> "+a+" ,balise junction "+b+" ,balise<"+nom+"hour> ");
 	                    }
 						else {
 						 System.err.println("Erreur : ligne " +"balise <ligne> "+a+" ,balise junction "+b+" ,balise<"+nom+"hour>\n format non compatible");

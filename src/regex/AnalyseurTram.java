@@ -8,7 +8,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class AnalyseurTram extends DefaultHandler{
 	
-	//initialise resultat à true. Des qu'une erreur est reperer au niveau du matching, il recoit false et on sort du programme. 
+	//initialise resultat Ã  true. Des qu'une erreur est reperer au niveau du matching, il recoit false et on sort du programme.
 	static boolean resultat=true;
 	
 	private boolean reseau,lignes,ligne,stations,heure;
@@ -20,10 +20,10 @@ public class AnalyseurTram extends DefaultHandler{
 	//ouverture et fermeture du tram.xml
 	@Override
 	public void startDocument() throws SAXException{
-		System.out.println("debut du fichier xml");
+		//System.out.println("debut du fichier xml");
 		}
 	public void  endDocument() {
-		System.out.println("fin du fichier xml");
+		//System.out.println("fin du fichier xml");
 	}
 		
 	@Override
@@ -94,7 +94,7 @@ public void characters(char[] ch, int start, int length) throws SAXException {
 					if(stations) {
 						donnee=new String(ch,start,length);
 						if(ligneStation.matcher(donnee).matches()){
-							System.out.println("balise <stations> de la balise <ligne> "+a);
+							//System.out.println("balise <stations> de la balise <ligne> "+a);
 	                    }
 						else {
 						 System.err.println("Erreur: balise <stations> de la balise <ligne> "+a+"\nformat non conforme");
@@ -106,7 +106,7 @@ public void characters(char[] ch, int start, int length) throws SAXException {
 					if(heure){
 						donnee=new String(ch,start,length);
 						if(ligneHeure.matcher(donnee).matches()){
-							System.out.println("balise <heure> "+b+" de la balise <ligne> "+a);
+							//System.out.println("balise <heure> "+b+" de la balise <ligne> "+a);
 	                    }
 						else {
 						 System.err.println("Erreur: balise <heure> "+b+" de la balise <ligne> "+a+"\nformat non conforme");
@@ -121,7 +121,7 @@ public void characters(char[] ch, int start, int length) throws SAXException {
 			if(stations) {
 				donnee=new String(ch,start,length);
 				if(ligneStation.matcher(donnee).matches()){
-					System.out.println("balise <stations>, liste des stations de toutes les lignes");
+					//System.out.println("balise <stations>, liste des stations de toutes les lignes");
                 }
 				else {
 				 System.err.println("Erreur: balise <stations> de toutes les lignes\nformat non conforme");

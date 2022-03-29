@@ -29,8 +29,8 @@ public final class FormatCheck {
     /**
      * Vérifie si le fichier, dont le nom est passé en paramètre, correspond au modèle attendu de
      * l'exploitant du réseau de car intercité.
-     * @param nomFichier    le nom du fichier à vérifier, qui sera récupéré dans src/fichiers.
-     * @return  un booléen indiquant si le fichier correspond bien au modèle attendu.
+     * @param nomFichier le nom du fichier à vérifier, qui sera recherché dans src/fichiers.
+     * @return un booléen indiquant si le fichier correspond bien au modèle attendu.
      */
 	public static boolean checkCar(String nomFichier){
 
@@ -53,7 +53,7 @@ public final class FormatCheck {
                 i++;
 
                 if(ligneCommentaire.matcher(line).matches()){ //Commentaire
-                    System.out.println(i + " Commentaire");
+                    //System.out.println(i + " Commentaire");
                 }
                 else if(ligneSeparateur.matcher(line).matches()){ //Séparateur
                     if(separateurRencontre){
@@ -61,12 +61,12 @@ public final class FormatCheck {
                         return false;
                     } else{
                         separateurRencontre = true;
-                        System.out.println(i + " Séparateur");
+                        //System.out.println(i + " Séparateur");
                     }
                 }
                 else if(separateurRencontre){ //après séparateur
                     if(ligneHoraire.matcher(line).matches()){
-                        System.out.println(i + " Horaire");
+                        //System.out.println(i + " Horaire");
                     }
                     else if(ligneLiaison.matcher(line).matches()){
                         System.err.println("Erreur : ligne " + i + " : Mauvais format d'heure.");
@@ -79,7 +79,7 @@ public final class FormatCheck {
                 }
                 else { //avant séparateur
                     if(ligneLiaison.matcher(line).matches()){
-                        System.out.println(i + " Liaison");
+                        //System.out.println(i + " Liaison");
                     }
                     else{
                         System.err.println("Erreur : ligne " + i + " : Format non reconnu.");
@@ -96,8 +96,13 @@ public final class FormatCheck {
 
     }
 
-
-	static boolean checkMetro(String nomFichier) {
+	/**
+	 * Vérifie si le fichier, dont le nom est passé en paramètre, correspond au modèle attendu de
+	 * l'exploitant du réseau de métro.
+	 * @param nomFichier le nom du fichier à vérifier, qui sera recherché dans src/fichiers.
+	 * @return un booléen indiquant si le fichier correspond bien au modèle attendu.
+	 */
+	public static boolean checkMetro(String nomFichier) {
 		try {
 			
 			//les patterns pour les differents matching
@@ -124,24 +129,24 @@ public final class FormatCheck {
 				
 				//si la ligne est vide
 				if(ligne.isEmpty()) {
-					System.out.println(compteur + " ligne vide");
+					//System.out.println(compteur + " ligne vide");
                     continue;
 				}
 				
 				//titre
 				if(ligne.equalsIgnoreCase("%depart arrivee duree")) {
-					System.out.println(compteur + " titre : " + ligne);
+					//System.out.println(compteur + " titre : " + ligne);
 					liaison = true;
 					continue;
 				}
 				
 				//titre
 				if(ligne.equalsIgnoreCase("%stations")) {
-					System.out.println(compteur + " titre : " + ligne);
+					//System.out.println(compteur + " titre : " + ligne);
 					ligne = scanner.nextLine();
 					compteur++;
 					if(ligneStation.matcher(ligne).matches()){
-                        System.out.println(compteur + " liste de stations");
+                        //System.out.println(compteur + " liste de stations");
                         continue;
                     }
 					else {
@@ -152,11 +157,11 @@ public final class FormatCheck {
 				
 				//titre
 				if(ligne.equalsIgnoreCase("%toutes les x minutes")) {
-					System.out.println(compteur + " titre : " + ligne);
+					//System.out.println(compteur + " titre : " + ligne);
 					ligne = scanner.nextLine();
 					compteur++;
 					if(ligneIntervalle.matcher(ligne).matches()){
-                        System.out.println(compteur + " minutes d'intervalles entre les departs");
+                        //System.out.println(compteur + " minutes d'intervalles entre les departs");
                         continue;
                     }
 					else {
@@ -170,12 +175,12 @@ public final class FormatCheck {
 				coll.setStrength(Collator.NO_DECOMPOSITION);
 
 				if(coll.compare(ligne, "%à partir de") == 0){
-					System.out.println(compteur + " titre : " + ligne);
+					//System.out.println(compteur + " titre : " + ligne);
 					liaison = false;
 					ligne = scanner.nextLine();
 					compteur++;
 					if(ligneHeure.matcher(ligne).matches()){
-                        System.out.println(compteur + " Heure du premier depart");
+                        //System.out.println(compteur + " Heure du premier depart");
                         continue;
                     }
 					else {
@@ -186,11 +191,11 @@ public final class FormatCheck {
 				
 				
 				if(ligne.equalsIgnoreCase("%dernier départs de Gare")) {
-					System.out.println(compteur + " titre : " + ligne);
+					//System.out.println(compteur + " titre : " + ligne);
 					ligne=scanner.nextLine();
 					compteur++;
 					if(ligneHeure.matcher(ligne).matches()){
-                        System.out.println(compteur + "Heure du  dernier depart");
+                        //System.out.println(compteur + "Heure du  dernier depart");
                         continue;
                     }
 					else {
@@ -202,7 +207,7 @@ public final class FormatCheck {
 				//ligne liaison
 				if(liaison) {
 					if(ligneLiaison.matcher(ligne).matches()){
-                        System.out.println(compteur + " liaison");
+                        //System.out.println(compteur + " liaison");
                         continue;
                     }
 					else {
@@ -213,7 +218,7 @@ public final class FormatCheck {
 				
 				// autres ligne
 				else {
-					System.out.println(compteur+" titre : " + ligne);
+					//System.out.println(compteur+" titre : " + ligne);
 				}
 			}
 			
@@ -223,9 +228,14 @@ public final class FormatCheck {
 		}   
 		return true;
 	}
-	
 
-	static boolean checkTrain(String nomFichier) {
+	/**
+	 * Vérifie si le fichier, dont le nom est passé en paramètre, correspond au modèle attendu de
+	 * l'exploitant du réseau trains.
+	 * @param nomFichier le nom du fichier à vérifier, qui sera recherché dans src/fichiers.
+	 * @return un booléen indiquant si le fichier correspond bien au modèle attendu.
+	 */
+	public static boolean checkTrain(String nomFichier) {
 			
 			try {
 				SAXParserFactory factoryTrain= SAXParserFactory.newInstance();
@@ -243,8 +253,13 @@ public final class FormatCheck {
 			return AnalyseurTrain.resultat ;
 		}
 
-
-	static boolean checkTram(String nomFichier) {
+	/**
+	 * Vérifie si le fichier, dont le nom est passé en paramètre, correspond au modèle attendu de
+	 * l'exploitant du réseau de tram.
+	 * @param nomFichier le nom du fichier à vérifier, qui sera recherché dans src/fichiers.
+	 * @return un booléen indiquant si le fichier correspond bien au modèle attendu.
+	 */
+	public static boolean checkTram(String nomFichier) {
 		try {
 			SAXParserFactory factoryTram= SAXParserFactory.newInstance();
 			SAXParser saxParserTram = factoryTram.newSAXParser();
@@ -262,7 +277,7 @@ public final class FormatCheck {
 
 	
 	public static void main(String[] args) {
-
+		System.out.println("PATH : " + new File(".").getAbsolutePath());
 		System.out.println("Métro : " + checkMetro("metro.txt"));
 		System.out.println("Train : " + checkTrain("train.xml"));
 		System.out.println("Tram : " + checkTram("tram.xml"));
