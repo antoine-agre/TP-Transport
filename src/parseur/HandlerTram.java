@@ -39,10 +39,10 @@ import donnees.Trajet;
 	@Override
 	public void startDocument() throws SAXException{
 		listeStation = new ArrayList<>();
-		System.out.println("debut du fichier xml");
+		//System.out.println("debut du fichier xml");
 		}
 	public void  endDocument() {
-		System.out.println("fin du fichier xml");
+		//System.out.println("fin du fichier xml");
 		}
 	
 	//ouverture et fermeture des balises necessaires a l'extraction des elements qui nous interessent

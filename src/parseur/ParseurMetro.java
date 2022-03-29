@@ -17,7 +17,7 @@ public class ParseurMetro {
 	//-les methodes
 	
 	//initialize la liste de stations avec les donnees.
-	public static void initialisisation_listeStation(String fileName) {
+	/*public static void initialisisation_listeStation(String fileName) {
 		try{
 		    listeStation = new ArrayList<>();
 		    //lescture en format utf-8
@@ -40,15 +40,13 @@ public class ParseurMetro {
 			scanner.close();    
 			}catch(IOException e){e.printStackTrace();}
 
-	}
-	
-	
-	
-	
+	}*/
+
+
 	/*
 	 * methode statique qui renvoie liste de liste de (depart,arrive,duree)
 	 */
-	static ArrayList<ArrayList<String>> liaison(String fileName) {
+	/*static ArrayList<ArrayList<String>> liaison(String fileName) {
 		
 		ArrayList<ArrayList<String>> tableau_donnee = new ArrayList<ArrayList<String>>();
 		try{
@@ -82,12 +80,11 @@ public class ParseurMetro {
 		    }catch(IOException e){e.printStackTrace();}
 
 		return tableau_donnee;
-	}
-	
-	
+	}*/
+
 	
 	//renvoie une liste de liste d'horaire de depart.
-	static ArrayList<ArrayList<LocalTime>> plageHoraire(ArrayList<String> liste,String fileName) {
+	/*static ArrayList<ArrayList<LocalTime>> plageHoraire(ArrayList<String> liste,String fileName) {
 		
 		//initialisation de la variable retourner.
 		ArrayList<ArrayList<LocalTime>> local=new ArrayList<ArrayList<LocalTime>>();
@@ -128,23 +125,20 @@ public class ParseurMetro {
 		}catch(IOException e){e.printStackTrace();}
 
 		return local;
-	}
+	}*/
 	
-	
-	
-	
+
 	//parseur du fichier metro.txt
-	public static ArrayList<Station> parseurMetro(String fileName) {
+	/*public static ArrayList<Station> parseurMetro(String fileName) {
 		ArrayList<Station> resultat;
 		int i=0,id_depart = 0,id_arriv = 0,id_duree = 0;
 		initialisisation_listeStation(fileName);
 		ArrayList<ArrayList<String>> liste=liaison(fileName);
-		/**
 
-		 * la premiere case des  3 ArrayList "s" contiennent les infos sur la nature des elements de "s".	
-		 * pour rappel : s.size=3
-		 * on supprime donc les premieres cases apres reception de l'informations.
-		 */
+		 // la premiere case des  3 ArrayList "s" contiennent les infos sur la nature des elements de "s".
+		 // pour rappel : s.size=3
+		 // on supprime donc les premieres cases apres reception de l'informations.
+
 		for(ArrayList<String> s:liste) {
 			if(s.get(0).equalsIgnoreCase("depart")){
 				id_depart = i;
@@ -183,7 +177,8 @@ public class ParseurMetro {
 		}
 		resultat=listeStation;
 		return resultat;
-	}
+	}*/
+
 
 	/**
 	 * Parse le fichier passé en paramètre, correspondant au réseau de métro.
@@ -217,9 +212,9 @@ public class ParseurMetro {
 				else if(line.equals("%depart arrivee duree")){
 
 					line = scanner.nextLine();
-					//System.out.println("line = " + line);
+
 					while(!line.isBlank()){
-						//System.out.println("BOUCLE : " + line);
+
 						String[] liaison = line.split("\\s+");
 
 						Trajet t = new Trajet(Station.listeGet(output, liaison[0]), Station.listeGet(output, liaison[1]),
@@ -228,16 +223,8 @@ public class ParseurMetro {
 						Station.listeGet(output, liaison[0]).addTrajet(t);
 						trajets.add(t);
 
-						//System.out.println("output : " + output);
-						//System.out.println("trajets : " + trajets);
-
 						line = scanner.nextLine();
-
-						/*Station.listeGet(output, liaison[0]).addTrajet(new Trajet(
-								Station.listeGet(output, liaison[0]), Station.listeGet(output, liaison[1]),
-								MoyenTransport.METRO, Integer.parseInt(liaison[2])));*/
 					}
-					//System.out.println("FIN BOUCLE : " + line);
 				}
 
 				else if(line.equals("%à partir de")){
@@ -259,10 +246,6 @@ public class ParseurMetro {
 				}
 			}
 
-			//System.out.println("Heure début : " + heureDebut + " ; Heure fin : " + heureDernierDepart + "; intervalle : " + intervalle);
-			//System.out.println("trajets : " + trajets);
-			//System.out.println("output : " + output);
-
 			int decalage = 0;
 
 			for(Trajet t : trajets){
@@ -273,8 +256,6 @@ public class ParseurMetro {
 				}
 				decalage = decalage + t.getDuree();
 			}
-			//System.out.println("FIN TRAJETS : " + trajets);
-			//System.out.println("FIN OUTPUT : " + output);
 
 			return output;
 
@@ -282,17 +263,14 @@ public class ParseurMetro {
 			System.err.println("Erreur : fichier non trouvé.");
 			e.printStackTrace();
 		}
-
-
 		return null;
-
 	}
 
 	
 
 	public static void main(String args[]){
-		ArrayList<Station> x=parseurMetro("metro.txt");
-		System.out.println(x);
+		//ArrayList<Station> x=parseurMetro("metro.txt");
+		//System.out.println(x);
 
 	}
 }

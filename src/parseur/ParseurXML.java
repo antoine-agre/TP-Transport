@@ -15,7 +15,7 @@ import donnees.Station;
 public class ParseurXML {
 
 		
-	public static ArrayList<Station> parseurXML(String fileName,MoyenTransport trans){
+	public static ArrayList<Station> parseXML(String fileName, MoyenTransport trans){
 		
 		try {
 			if(trans.equals(MoyenTransport.TRAM)) {
@@ -71,7 +71,7 @@ public class ParseurXML {
 	
 	
 	public static void main(String[] args) {
-		ArrayList<Station> styu= parseurXML("tram.xml",MoyenTransport.TRAM);
+		ArrayList<Station> styu= parseXML("tram.xml",MoyenTransport.TRAM);
 		System.out.println(styu);
 	    }
 	

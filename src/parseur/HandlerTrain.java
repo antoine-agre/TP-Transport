@@ -31,13 +31,13 @@ import donnees.Trajet;
 	@Override
 	public void startDocument() throws SAXException {
 		listeStation = new ArrayList<>();
-		System.out.println("ouverture du fichier Train.xml");
+		//System.out.println("ouverture du fichier Train.xml");
 	}
 
 	@Override
 	public void endDocument() throws SAXException {
-		System.out.println("fin du fichier Train.xml");
-		System.out.println(listeStation.size());
+		//System.out.println("fin du fichier Train.xml");
+		//System.out.println(listeStation.size());
 	}
 
 	@Override

@@ -15,7 +15,6 @@ public class ParseurCar {
 	 * Parse le fichier InterCites.txt, correspondant au réseau de cars.
 	 * @return la liste des stations construites.
 	 */
-
 	public static ArrayList<Station> parseCar(String nomFichier){
         
 		ArrayList<Station> output = new ArrayList<Station>();
