@@ -59,13 +59,21 @@ public class Station {
     	return null;
 	}
 
-	
+	/**
+	 * Retourne l'union des deux ArrayListe de Station passées en paramètres.
+	 * @param l1 première liste
+	 * @param l2 seconde liste
+	 * @return une ArrayList de Station remplie par les stations de l1 et l2
+	 */
 	public static ArrayList<Station> unionStation(ArrayList<Station> l1, ArrayList<Station> l2) {
 		/*
 		 * Union de deux ensembles de stations.
 		 * --HYPOTHESE: chaque liste (l1 et l2) contiennent des stations dont les noms sont 2 a 2 distincts. 
 		 * Le resultat obtenue est une liste de stations contenants les stations de l1 et l2.
 		 * */
+
+		if(l1.isEmpty()){return l2;}
+
 		ArrayList<Station> new_liste= new ArrayList<Station>(l1);
 		Hashtable<Station,Integer> hashtable = new Hashtable<Station, Integer>();
 		Integer nonMarquer=Integer.valueOf(0);
