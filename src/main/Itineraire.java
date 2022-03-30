@@ -62,6 +62,7 @@ public final class Itineraire {
 
                 LocalTime prochainHoraire;
 
+                if(tete.getHeureArrivee() == null){continue;}
                 if (trajet.getListeHoraires().ceiling(tete.getHeureArrivee()) == null) {
                     prochainHoraire = trajet.getListeHoraires().first();
                 } else {

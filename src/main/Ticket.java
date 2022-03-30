@@ -84,8 +84,8 @@ public class Ticket {
             chemin.add("\n" + temp.getHeureArrivee().minusMinutes(temp.getTempsTrajet()) + " " + temp.getOrigine().getNom() + " --" +
                     temp.getTempsTrajet() + "min|" + temp.getOrigine().getTrajet(temp.getStation()).getMoyenTransport().toString()
                     + "--> " + temp.getStation().getNom() + " " + temp.getHeureArrivee().toString());
-            System.out.println("origine : " + temp.getOrigine().getNom());
-            System.out.println("reseau : " + reseau);
+            //System.out.println("origine : " + temp.getOrigine().getNom());
+            //System.out.println("reseau : " + reseau);
             temp = getTicket(reseau, temp.getOrigine());
         }
 
