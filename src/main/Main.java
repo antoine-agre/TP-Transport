@@ -16,13 +16,19 @@ public class Main {
 	
 		ArrayList<Station> listeStations = new ArrayList<Station>();
 
-		listeStations = Station.unionStation(ParseurXML.parseXML("tram.xml", MoyenTransport.TRAM), ParseurXML.parseXML("train.xml", MoyenTransport.TRAIN));
+		listeStations = Station.unionStation(ParseurXML.parseXML("tram.xml", MoyenTransport.TRAM),
+				ParseurXML.parseXML("train.xml", MoyenTransport.TRAIN));
 		listeStations = Station.unionStation(listeStations, ParseurMetro.parseMetro("metro.txt"));
 		listeStations = Station.unionStation(listeStations, ParseurCar.parseCar("InterCites.txt"));
 		
-		System.out.println(listeStations);
-		
-        Itineraire.trouveChemin(listeStations, listeStations.get(0), listeStations.get(4), LocalTime.of(8,2));
+		//System.out.println(listeStations);
+		//System.out.println(Station.listeGet(listeStations, "Gare"));
+
+		listeStations = Itineraire.donneesTest();
+		System.out.println(Station.listeGet(listeStations, "E"));
+
+        Itineraire.trouveChemin(listeStations, Station.listeGet(listeStations, "A"),
+				Station.listeGet(listeStations, "E"), LocalTime.of(10,24));
 		
     }
 }

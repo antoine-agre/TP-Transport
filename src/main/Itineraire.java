@@ -3,8 +3,6 @@ package main;
 import donnees.MoyenTransport;
 import donnees.Station;
 import donnees.Trajet;
-
-import java.lang.reflect.Array;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.*;
@@ -52,15 +50,29 @@ public final class Itineraire {
                 return;
             }
 
-            for(int i = 0; i < queue.size(); i++){
-                Ticket voisin = queue.get(i); //voisin en cours de traitement
+            //voisin en cours de traitement
+            for (Ticket voisin : queue) {
+                if(tete.getStation().getTrajet(voisin.getStation()) == null){continue;}
+
+                System.out.println("Tete : " + tete.getStation().getNom());
+                System.out.println("Voisin : " + voisin.getStation().getNom());
                 Trajet trajet = tete.getStation().getTrajet(voisin.getStation()); //trajet reliant tête à voisin
-                if(trajet == null){continue;}
-                LocalTime prochainHoraire = trajet.getListeHoraires().ceiling(tete.getHeureArrivee());
+
+                //if (trajet == null || tete.getHeureArrivee() == null) {continue;}
+
+                LocalTime prochainHoraire;
+
+                if (trajet.getListeHoraires().ceiling(tete.getHeureArrivee()) == null) {
+                    prochainHoraire = trajet.getListeHoraires().first();
+                } else {
+                    prochainHoraire = trajet.getListeHoraires().ceiling(tete.getHeureArrivee());
+                }
+
+                //if (prochainHoraire == null) {continue;}
                 int attente = (int) Duration.between(tete.getHeureArrivee(), prochainHoraire).toMinutes();
 
-                if(tete.tempsTrajet + attente + trajet.getDuree() < voisin.tempsTrajet){
-                    queue.get(i).update(tete.getStation(),
+                if (tete.tempsTrajet + attente + trajet.getDuree() < voisin.tempsTrajet) {
+                    voisin.update(tete.getStation(),
                             tete.getHeureArrivee().plusMinutes(attente).plusMinutes(trajet.getDuree()), attente + trajet.getDuree());
                 }
             }
