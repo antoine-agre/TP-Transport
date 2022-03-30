@@ -9,6 +9,9 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.*;
 
+/**
+ * Classe utilitaire fournissant les méthodes pour chercher un trajet pour l'utilisateur.
+ */
 public final class Itineraire {
 
     /*Classe "statique" : finale, constructeur private, TOUS les membres static*/
@@ -19,6 +22,11 @@ public final class Itineraire {
     /**
      * Algorithme de Dijkstra adapté au cas d'un réseau de transport avec listes d'horaires.
      * C'est la fonction principale que l'on voudra utiliser dans le programme.
+     * Affiche une visualisation du trajet trouvé.
+     * @param listeStations réseau dans lequel effectuer la recherche.
+     * @param depart la station de départ du trajet.
+     * @param arrivee la station d'arrivée du trajet.
+     * @param heureDepart l'heure à partir de laquelle l'usager souhaite partir.
      */
     protected static void trouveChemin(ArrayList<Station> listeStations, Station depart, Station arrivee, LocalTime heureDepart){
 
@@ -30,10 +38,8 @@ public final class Itineraire {
             queue.add(new Ticket(s, Integer.MAX_VALUE));
         }
         queue.add(new Ticket(depart, 0, heureDepart));
-        //queue.sort((e1, e2) -> Integer.compare(e1.getTempsTrajet(), e2.getTempsTrajet()));
         sortTickets(queue);
 
-        //while(queueContient(queue, arrivee)){
         while(queue.stream().anyMatch((t) -> {return t.getStation().equals(arrivee);})){
 
             //traitement voisins de station de tête
@@ -50,10 +56,7 @@ public final class Itineraire {
                 Ticket voisin = queue.get(i); //voisin en cours de traitement
                 Trajet trajet = tete.getStation().getTrajet(voisin.getStation()); //trajet reliant tête à voisin
                 if(trajet == null){continue;}
-                //récupérer premier horaire après temps de tete
-                //System.out.println("A");
                 LocalTime prochainHoraire = trajet.getListeHoraires().ceiling(tete.getHeureArrivee());
-                //System.out.println("B");
                 int attente = (int) Duration.between(tete.getHeureArrivee(), prochainHoraire).toMinutes();
 
                 if(tete.tempsTrajet + attente + trajet.getDuree() < voisin.tempsTrajet){
@@ -66,43 +69,14 @@ public final class Itineraire {
 
     }
 
-
+    /**
+     * Trie la liste de Ticket passée en paramètre par le temps de trajet minimum trouvé.
+     * @param liste la liste à trier.
+     */
     static private void sortTickets(ArrayList<Ticket> liste){
         //System.out.println("SORT : liste = " + liste);
         liste.sort((e1, e2) -> Integer.compare(e1.getTempsTrajet(), e2.getTempsTrajet()));
     }
-
-    static private Ticket removeTicket(ArrayList<Ticket> liste, Station station){
-        for(Ticket t : liste){
-            if(t.getStation().equals(station)){
-                liste.remove(t);
-                return t;
-            }
-        }
-        return null;
-    }
-
-    /*
-    static private boolean queueContient(PriorityQueue<Ticket> queue, Station station){
-        while(!queue.isEmpty()){
-            if(queue.remove().getStation().equals(station)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    static private boolean queueGet(PriorityQueue<Ticket> queue, Station station){
-
-        while(!queue.isEmpty()){
-            Ticket temp = queue.remove();
-            if(temp.getStation().equals(station)){
-                return temp;
-            }
-        }
-        return false;
-    }
-    */
 
     /**
      * Crée des données manuellement pour tester l'algorithme.

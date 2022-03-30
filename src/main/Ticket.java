@@ -56,12 +56,25 @@ public class Ticket {
         this.heureArrivee = heureArrivee;
     }
 
+    /**
+     * Met à jour le Ticket.
+     * @param origine nouvelle station d'origine.
+     * @param heureArrivee nouvelle heure d'arrivée.
+     * @param tempsTrajet nouvelle durée du trajet, en minutes.
+     */
     public void update(Station origine, LocalTime heureArrivee, int tempsTrajet){
         this.origine = origine;
         this.heureArrivee = heureArrivee;
         this.tempsTrajet = tempsTrajet;
     }
 
+    /**
+     * Remonte les tickets issus de Itineraire.trouveChemin pour retourner une liste de chaînes de caractères décrivant
+     * le trajet trouvé.
+     * @param ticket le dernier ticket traité.
+     * @param reseau l'ensemble des tickets.
+     * @return une ArrayList de String décrivant l'itinéraire.
+     */
     public static ArrayList<String> chemin(Ticket ticket, ArrayList<Ticket> reseau){
 
         ArrayList<String> chemin = new ArrayList<>();
@@ -79,6 +92,12 @@ public class Ticket {
         return chemin;
     }
 
+    /**
+     * Cherche le ticket concernant une station passée en paramètre dans la liste de tickets passé en paramètre.
+     * @param reseau la liste de tickets.
+     * @param station la station du ticket recherché.
+     * @return le ticket trouvé.
+     */
     private static Ticket getTicket(ArrayList<Ticket> reseau, Station station){
         for(Ticket t : reseau){
             if(t.getStation().equals(station)){
