@@ -54,8 +54,8 @@ public final class Itineraire {
             for (Ticket voisin : queue) {
                 if(tete.getStation().getTrajet(voisin.getStation()) == null){continue;}
 
-                System.out.println("Tete : " + tete.getStation().getNom());
-                System.out.println("Voisin : " + voisin.getStation().getNom());
+                //System.out.println("Tete : " + tete.getStation().getNom());
+                //System.out.println("Voisin : " + voisin.getStation().getNom());
                 Trajet trajet = tete.getStation().getTrajet(voisin.getStation()); //trajet reliant tête à voisin
 
                 //if (trajet == null || tete.getHeureArrivee() == null) {continue;}

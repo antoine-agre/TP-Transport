@@ -108,7 +108,7 @@ import donnees.Trajet;
 				if(first_in) {
 					Station d= new Station(junction.get(0));
 					Station p= new Station(junction.get(1));
-					Trajet e =new Trajet(d,p,MoyenTransport.TRAM,duree);
+					Trajet e =new Trajet(d,p,MoyenTransport.TRAIN,duree);
 					e.addHoraire(ParseurXML.horaire(junction.get(2)));
 					d.addTrajet(e);
 					listeStation.add(d);
@@ -148,7 +148,7 @@ import donnees.Trajet;
 											break;
 										}
 										if(indice_trajet==listeStation.get(x).getListeTrajets().size()){
-											Trajet e =new Trajet(listeStation.get(x),listeStation.get(y),MoyenTransport.TRAM,duree);
+											Trajet e =new Trajet(listeStation.get(x),listeStation.get(y),MoyenTransport.TRAIN,duree);
 											e.addHoraire(ParseurXML.horaire(junction.get(2)));
 											listeStation.get(x).addTrajet(e);
 											break;
@@ -156,7 +156,7 @@ import donnees.Trajet;
 									}
 									
 									if(listeStation.get(x).getListeTrajets().size()==0) {
-										Trajet e =new Trajet(listeStation.get(x),listeStation.get(y),MoyenTransport.TRAM,duree);
+										Trajet e =new Trajet(listeStation.get(x),listeStation.get(y),MoyenTransport.TRAIN,duree);
 										e.addHoraire(ParseurXML.horaire(junction.get(2)));
 										listeStation.get(x).addTrajet(e);
 									}
@@ -166,7 +166,7 @@ import donnees.Trajet;
 								if(depart && arriv) {
 									Station d= new Station(junction.get(0));
 									Station p= new Station(junction.get(1));
-									Trajet e =new Trajet(d,p,MoyenTransport.TRAM,duree);
+									Trajet e =new Trajet(d,p,MoyenTransport.TRAIN,duree);
 									e.addHoraire(ParseurXML.horaire(junction.get(2)));
 									d.addTrajet(e);
 									listeStation.add(d);
@@ -176,7 +176,7 @@ import donnees.Trajet;
 								//--- cas depart absent && arrivee present.
 								if(depart && !arriv) {
 									Station d= new Station(junction.get(0));
-									Trajet e =new Trajet(d,listeStation.get(y),MoyenTransport.TRAM,duree);
+									Trajet e =new Trajet(d,listeStation.get(y),MoyenTransport.TRAIN,duree);
 									e.addHoraire(ParseurXML.horaire(junction.get(2)));
 									d.addTrajet(e);
 									listeStation.add(d);
@@ -185,7 +185,7 @@ import donnees.Trajet;
 								//---cas depart present && arrivee absent.
 								if(!depart && arriv) {
 									Station p= new Station(junction.get(1));
-									Trajet e =new Trajet(listeStation.get(x),p,MoyenTransport.TRAM,duree);
+									Trajet e =new Trajet(listeStation.get(x),p,MoyenTransport.TRAIN,duree);
 									e.addHoraire(ParseurXML.horaire(junction.get(2)));
 									listeStation.get(x).addTrajet(e);
 									listeStation.add(p);
