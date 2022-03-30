@@ -100,4 +100,8 @@ public class Trajet {
     public void setListeHoraires(TreeSet<LocalTime> listeHoraires) {
         this.listeHoraires = listeHoraires;
     }
+
+    public MoyenTransport getMoyenTransport() {
+        return moyenTransport;
+    }
 }
