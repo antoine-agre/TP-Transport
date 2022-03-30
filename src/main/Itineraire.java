@@ -4,11 +4,10 @@ import donnees.MoyenTransport;
 import donnees.Station;
 import donnees.Trajet;
 
+import java.lang.reflect.Array;
+import java.time.Duration;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public final class Itineraire {
 
@@ -21,17 +20,89 @@ public final class Itineraire {
      * Algorithme de Dijkstra adapté au cas d'un réseau de transport avec listes d'horaires.
      * C'est la fonction principale que l'on voudra utiliser dans le programme.
      */
-    protected static void trouveChemin(){
+    protected static void trouveChemin(ArrayList<Station> listeStations, Station depart, Station arrivee, LocalTime heureDepart){
 
-        PriorityQueue<Ticket> queue = new PriorityQueue<Ticket>(new Comparator<Ticket>() {
-            @Override
-            public int compare(Ticket o1, Ticket o2) { //o1 - o2
-                return o1.temps.compareTo(o2.temps);
+        ArrayList<Ticket> queue = new ArrayList<Ticket>(); //Tickets en attente de traitement
+        ArrayList<Ticket> stash = new ArrayList<Ticket>(); //Tickets visités
+
+        listeStations.remove(depart);
+        for(Station s : listeStations){
+            queue.add(new Ticket(s, Integer.MAX_VALUE));
+        }
+        queue.add(new Ticket(depart, 0, heureDepart));
+        //queue.sort((e1, e2) -> Integer.compare(e1.getTempsTrajet(), e2.getTempsTrajet()));
+        sortTickets(queue);
+
+        //while(queueContient(queue, arrivee)){
+        while(queue.stream().anyMatch((t) -> {return t.getStation().equals(arrivee);})){
+
+            //traitement voisins de station de tête
+            Ticket tete = queue.remove(0);
+            stash.add(tete);
+
+            if(tete.getStation().equals(arrivee)){
+                stash.addAll(queue);
+                System.out.println(Ticket.chemin(tete, stash));
+                return;
             }
-        });
+
+            for(int i = 0; i < queue.size(); i++){
+                Ticket voisin = queue.get(i); //voisin en cours de traitement
+                Trajet trajet = tete.getStation().getTrajet(voisin.getStation()); //trajet reliant tête à voisin
+                if(trajet == null){continue;}
+                //récupérer premier horaire après temps de tete
+                //System.out.println("A");
+                LocalTime prochainHoraire = trajet.getListeHoraires().ceiling(tete.getHeureArrivee());
+                //System.out.println("B");
+                int attente = (int) Duration.between(tete.getHeureArrivee(), prochainHoraire).toMinutes();
+
+                if(tete.tempsTrajet + attente + trajet.getDuree() < voisin.tempsTrajet){
+                    queue.get(i).update(tete.getStation(),
+                            tete.getHeureArrivee().plusMinutes(attente).plusMinutes(trajet.getDuree()), attente + trajet.getDuree());
+                }
+            }
+            sortTickets(queue);
+        }
 
     }
 
+
+    static private void sortTickets(ArrayList<Ticket> liste){
+        //System.out.println("SORT : liste = " + liste);
+        liste.sort((e1, e2) -> Integer.compare(e1.getTempsTrajet(), e2.getTempsTrajet()));
+    }
+
+    static private Ticket removeTicket(ArrayList<Ticket> liste, Station station){
+        for(Ticket t : liste){
+            if(t.getStation().equals(station)){
+                liste.remove(t);
+                return t;
+            }
+        }
+        return null;
+    }
+
+    /*
+    static private boolean queueContient(PriorityQueue<Ticket> queue, Station station){
+        while(!queue.isEmpty()){
+            if(queue.remove().getStation().equals(station)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static private boolean queueGet(PriorityQueue<Ticket> queue, Station station){
+
+        while(!queue.isEmpty()){
+            Ticket temp = queue.remove();
+            if(temp.getStation().equals(station)){
+                return temp;
+            }
+        }
+        return false;
+    }
+    */
 
     /**
      * Crée des données manuellement pour tester l'algorithme.

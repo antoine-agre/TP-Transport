@@ -32,4 +32,13 @@ public class Station {
     public void addTrajet(Trajet trajet) {
         this.listeTrajets.add(trajet);
     }
+
+    public Trajet getTrajet(Station station){
+        for(Trajet t : this.listeTrajets){
+            if(t.getArrivee().equals(station)){
+                return t;
+            }
+        }
+        return null;
+    }
 }

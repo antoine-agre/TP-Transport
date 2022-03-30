@@ -1,8 +1,9 @@
 package main;
 
 import donnees.Station;
-
-import java.util.Date;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Collections;
 
 
 /**
@@ -24,13 +25,69 @@ public class Ticket {
      * Heure d'arrivée à cette station pour le chemin le plus court,
      * utilisée pour reconstituer le chemin à la fin de l'algorithme.
      */
-    protected Date temps;
+    protected LocalTime heureArrivee;
 
-    public Ticket(Station station, Station origine, Date temps) {
+    /**
+     * Temps, en minutes, pris par le chemin le plus court jusqu'à cette station.
+     */
+    protected int tempsTrajet;
+
+    public Ticket(Station station){
+        this.station = station;
+        //this.heure = heure;
+        this.tempsTrajet = Integer.MAX_VALUE;
+    }
+
+    public Ticket(Station station, int tempsTrajet){
+        this.station = station;
+        //this.heure = heure;
+        this.tempsTrajet = tempsTrajet;
+    }
+
+    public Ticket(Station station, int tempsTrajet, LocalTime heureArrivee){
+        this.station = station;
+        this.heureArrivee = heureArrivee;
+        this.tempsTrajet = tempsTrajet;
+    }
+
+    public Ticket(Station station, Station origine, LocalTime heureArrivee) {
         this.station = station;
         this.origine = origine;
-        this.temps = temps;
+        this.heureArrivee = heureArrivee;
     }
+
+    public void update(Station origine, LocalTime heureArrivee, int tempsTrajet){
+        this.origine = origine;
+        this.heureArrivee = heureArrivee;
+        this.tempsTrajet = tempsTrajet;
+    }
+
+    public static ArrayList<String> chemin(Ticket ticket, ArrayList<Ticket> reseau){
+
+        ArrayList<String> chemin = new ArrayList<>();
+        Ticket temp = ticket;
+
+        while(!(temp.getOrigine() == null)){
+            chemin.add(temp.getHeureArrivee().minusMinutes(temp.getTempsTrajet()) + " " + temp.getOrigine().getNom() + " --" + temp.getTempsTrajet() + "min--> " + temp.getStation().getNom() +
+                    " " + temp.getHeureArrivee().toString());
+            System.out.println("origine : " + temp.getOrigine().getNom());
+            System.out.println("reseau : " + reseau);
+            temp = getTicket(reseau, temp.getOrigine());
+        }
+
+        Collections.reverse(chemin);
+        return chemin;
+    }
+
+    private static Ticket getTicket(ArrayList<Ticket> reseau, Station station){
+        for(Ticket t : reseau){
+            if(t.getStation().equals(station)){
+                return t;
+            }
+        }
+        return null;
+    }
+
 
     public Station getStation() {
         return station;
@@ -48,11 +105,15 @@ public class Ticket {
         this.origine = origine;
     }
 
-    public Date getTemps() {
-        return temps;
+    public LocalTime getHeureArrivee() {
+        return heureArrivee;
     }
 
-    public void setTemps(Date temps) {
-        this.temps = temps;
+    public void setHeureArrivee(LocalTime heureArrivee) {
+        this.heureArrivee = heureArrivee;
     }
+
+    public int getTempsTrajet() { return tempsTrajet; }
+
+    public void setTempsTrajet(int tempsTrajet) { this.tempsTrajet = tempsTrajet; }
 }
