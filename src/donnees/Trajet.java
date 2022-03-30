@@ -2,8 +2,6 @@ package donnees;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
@@ -12,11 +10,13 @@ import java.util.TreeSet;
  */
 public class Trajet {
 
+	//Attributs 
+	
     /**
      * Station de départ.
      * <br>C'est aussi dans cette station que la liste des trajets sera conservée.
      */
-    protected Station depart;
+	protected Station depart;
 
     /**
      * Station d'arrivée.
@@ -46,9 +46,14 @@ public class Trajet {
      * @param moyenTransport moyen de transport.
      * @param duree durée du trajet, en minutes.
      */
+	
+	
+    //Constructeur
+    
     public Trajet(Station depart, Station arrivee, MoyenTransport moyenTransport, int duree){
         this.depart = depart;
         this.arrivee = arrivee;
+        this.duree = duree;
         this.moyenTransport = moyenTransport;
         this.duree = duree;
     }
@@ -84,6 +89,40 @@ public class Trajet {
     public void setArrivee(Station arrivee) {
         this.arrivee = arrivee;
     }
+    
+    
+    //Overrides
+    
+    
+    @Override
+    public String toString(){
+        return "Trajet : " + this.depart.getNom() + " ---> " + this.arrivee.getNom() + "\n   " + this.moyenTransport.toString() +
+                "\n   " + duree + "min" + "\n   Horaires :\n   " + this.listeHoraires.toString()+"\n";
+    }
+    
+
+	//Setters/Getters
+    
+    public void setListeHoraires(TreeSet<LocalTime> listeHoraires) {
+		this.listeHoraires = listeHoraires;
+	}
+
+
+	public Station getDepart() {
+		return depart;
+	}
+
+	public void setDepart(Station depart) {
+		this.depart = depart;
+	}
+
+	public Station getArrivee() {
+		return arrivee;
+	}
+	
+	public void setArrivee(Station arrivee) {
+		this.arrivee = arrivee;
+	}
 
     public int getDuree() {
         return duree;
@@ -96,12 +135,40 @@ public class Trajet {
     public TreeSet<LocalTime> getListeHoraires() {
         return listeHoraires;
     }
-
-    public void setListeHoraires(TreeSet<LocalTime> listeHoraires) {
+	
+	public void setListeHoraires(TreeSet<LocalTime> listeHoraires) {
         this.listeHoraires = listeHoraires;
     }
-
-    public MoyenTransport getMoyenTransport() {
+	
+	public MoyenTransport getMoyenTransport() {
         return moyenTransport;
     }
+	
+	
+    //Méthodes
+    
+    public void addHoraire(LocalTime h) {
+		listeHoraires.add(h);
+	}
+    
+    public void addHoraire(int heures, int minutes) {
+        listeHoraires.add(LocalTime.of(heures, minutes));
+    }
+
+	
+    //Méthodes statiques
+
+    /**
+     * Retourne le Trajet dont le nom de l'arrivée est donnée existant dans l'ArrayList donnée.
+     * @param liste     la liste de trajets
+     * @param destination   le nom de l'arrivée du Trajet recherché
+     * @return	le Trajet trouvée dans la liste.
+     */
+    public static Trajet listeGet(ArrayList<Trajet> liste, String destination){
+        for(Trajet t : liste){
+            if(t.getArrivee().getNom().equals(destination)){return t;}
+        }
+        return null;
+    }
+    
 }
